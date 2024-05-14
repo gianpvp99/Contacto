@@ -32,6 +32,35 @@
             font-weight: bold;
         }
 
+        .loaderGif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.5); /* Rojo transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999; /* Ajusta este valor según sea necesario */
+        }
+
+        .loaderGif-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loaderGif-content img {
+            width: 300px; /* Tamaño personalizado del gif */
+            height: 200px; /* Tamaño personalizado del gif */
+        }
+
+        /* Asegúrate de que los otros elementos tengan un z-index mayor que el del loader */
+        .other-element {
+            position: relative;
+            z-index: 1000; /* Por ejemplo */
+        }
+
 
         #home input {
 
@@ -678,6 +707,13 @@
         </div>
         <div id="loading-text">Cargando información...</div>
     </div>
+    <!-- LOADER CON GIF -->
+    <!-- <div id="loaderGif" class="loaderGif">
+        <div class="loaderGif-content">
+          <img src="C:/Users/exp_gvasquez/Documents/Contacto/images/toyota.gif" alt="Loading..." />
+          <div id="loading-text">Cargando información...</div>
+        </div>
+    </div> -->
     
     <div id="initial-page" class="container mt-5">
         <div class="card">
@@ -839,7 +875,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <h3>¿Eres cliente MAF?</h3>
-                                            <p>¡Ingresa a <a  style="text-decoration: none; color: #82CEE6; font-weight: bold" href="https://zonasegura.mafperu.com/portalclientes/">MAF Digital</a> donde encontrarás toda la información que necesitas!</p>
+                                            <h3>¡Ingresa a <a  style="text-decoration: none; color: #82CEE6; font-weight: bold" href="https://zonasegura.mafperu.com/portalclientes/">MAF Digital</a> donde encontrarás toda la información que necesitas!</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -852,11 +888,11 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <ul>
-                                                <li>Contrato</li>
-                                                <li>Estado de cuenta</li>
-                                                <li>Cronograma de pago</li>
-                                                <li>Carta de no adeudo</li>
-                                                <li>Renovación de póliza</li>
+                                                <li><h5>Contrato</h6></li>
+                                                <li><h6>Estado de cuenta</h6></li>
+                                                <li><h6>Cronograma de pago</h6></li>
+                                                <li><h6>Carta de no adeudo</h6></li>
+                                                <li><h6>Renovación de póliza</h6></li>
                                             </ul>
     
                                         </div>
@@ -1552,6 +1588,16 @@
     </script>
     <script> // MODIFICADO
     document.addEventListener('DOMContentLoaded', async function() {
+
+        // Llama a cargarTiposDocumento de forma asíncrona
+        try {
+            await cargarTiposDocumento();
+            // Oculta el loader una vez que la página está cargada
+            document.getElementById('loader').style.display = 'none';
+        } catch (error) {
+            console.error('Error cargando tipos de documento:', error);
+        }
+
         // Selecciona el elemento select y el input
         const tipoDoc = document.getElementById('tipoDoc');
         const nroDoc = document.getElementById('nroDoc');
@@ -1626,17 +1672,7 @@
             document.getElementById('loader').style.display = 'none';
         });
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     cargarTiposDocumento();});
-        // Llama a cargarTiposDocumento de forma asíncrona
-        try {
-            await cargarTiposDocumento();
-            // Oculta el loader una vez que la página está cargada
-            document.getElementById('loader').style.display = 'none';
-        } catch (error) {
-            console.error('Error cargando tipos de documento:', error);
-        }
-
+        
         document.getElementById('tipoCaso').addEventListener('change', actualizarTextoPorSeleccion);
         document.getElementById('motivos').addEventListener('change', actualizarTextoPorSeleccion);
         document.getElementById('submotivos').addEventListener('change', actualizarTextoPorSeleccion);
@@ -1726,10 +1762,12 @@
 
             const select = document.getElementById('tipoDoc');
             select.innerHTML = '<option value="">Seleccionar</option>';
-
             data.forEach(doc => {
-                const option = new Option(doc.Nombre, doc.Codigo);
-                select.appendChild(option);
+                if(doc.Codigo == 1 || doc.Codigo == 2 || doc.Codigo == 3 || doc.Codigo == 9){
+                    const option = new Option(doc.Nombre, doc.Codigo);
+                    select.appendChild(option);
+                }
+                
             });
         }catch(error){
             console.error('Error cargando tipos de documento:', error);
@@ -2134,9 +2172,6 @@
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
 
 </body>
 </html>
