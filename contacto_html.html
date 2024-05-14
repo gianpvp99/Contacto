@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Web con Pestañas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <style>
+        /* Estilos adicionales personalizados */
+        #loader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column; /* Cambiar la dirección a columna */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading-text {
+            margin-top: 10px; /* Espacio entre el spinner y el texto */
+            font-size: 18px;
+            color: #333; /* Color del texto */
+            font-weight: bold;
+        }
+
+
+        #home input {
+
+            border-color: black;
+            border-radius: 10px;
+        }
+
+        #home label
+        {
+            font-family: Arial;
+            font-weight: bold;
+        }
+
+        #profile input {
+
+            border-color: black;
+            border-radius: 10px;
+        }
+
+        #profile label
+        {
+            font-family: Arial;
+            font-weight: bold;
+        }
+
+        #profile select {
+
+            border-color: black;
+            border-radius: 10px;
+        }
+
+        .card-header
+        {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+        .nav-tabs .nav-item {
+            flex: 1; /* Distribuye el espacio uniformemente */
+            text-align: center; /* Alineación central del texto */
+            position: relative; /* Posición relativa para el posicionamiento del pseudoelemento */
+            margin: 1rem;
+        }
+
+        .nav-tabs .nav-link {
+            width: 100%;
+            border-radius: 0; /* Elimina bordes redondeados */
+            color: black; /* Color inicial del texto */
+            background-color: transparent; /* Fondo inicial transparente */
+            padding: 10px;
+            border: solid 1.2px darkgray; /* Borde negro para todos por defecto */
+            /*opacity: 50%;*/
+            opacity: 0.5;
+        }
+
+        .nav-tabs .nav-link.active {
+            font-weight: bold; /* Texto en negrita para la pestaña activa */
+            color: black; /* Texto en negro */
+            border: 2px solid red; /* Borde rojo para la pestaña activa */
+            background-color: transparent; /* Fondo transparente */
+            z-index: 1; /* Asegura que el borde rojo esté por encima de cualquier otro elemento */
+            opacity: 1.5;
+        }
+
+        .tab-content {
+            border: none; /* Sin borde alrededor del contenido */
+            padding: 0;
+            margin: 0;
+        }
+
+        .icon-tab {
+            display: block;
+            font-size: 1.5rem; /* Íconos más grandes */
+        }
+
+
+        #btncontinuar1 {
+            margin-top: 1rem; /* Usar rem para que sea proporcional al tamaño base del font */
+            padding: 1.25rem 2.5rem; /* Padding más simplificado */
+            border-radius: 1.25rem; /* Borde redondeado, también en rem */
+            font-size: 1.25rem; /* Tamaño de fuente más grande para mejor lectura en móviles */
+            background-color: red; /* Color de fondo */
+            border: none; /* Sin borde */
+            color: white; /* Texto blanco para mayor contraste */
+            transition: background-color 0.3s; /* Efecto de transición suave al cambiar de estado */
+        }
+
+        #btncontinuar1:hover {
+            background-color: darkred; /* Color más oscuro al pasar el mouse para mejor feedback */
+        }
+
+        #tipoDoc, #nroDoc {
+            border-radius: 0;
+        }
+
+        .card{
+            border: none;
+        }
+
+        input[type="checkbox"] {
+
+            border: 3px solid red;
+        }
+
+        /* Estilo básico para la casilla de verificación */
+        .form-check-input {
+            accent-color: red; /* Cambia el color del tick a rojo */
+            width: 1.5rem; /* Tamaño de la casilla */
+            height: 1.5rem; /* Tamaño de la casilla */
+            margin-top: 0.5rem;
+        }
+
+        /* Estilo para el efecto hover sobre la casilla de verificación */
+        .form-check-input:hover {
+            background-color: #ffcccc; /* Un rojo claro para el efecto hover */
+        }
+
+        /* Estilo para cuando la casilla está marcada */
+        .form-check-input:checked {
+            background-color: red; /* Fondo rojo cuando está marcada */
+        }
+
+        /* Estilo para cambiar el borde y la sombra al enfocar */
+        .form-check-input:focus {
+            outline: none; /* Elimina el contorno predeterminado */
+            box-shadow: 0 0 3px 3px rgba(255, 0, 0, 0.5); /* Sombra roja */
+        }
+        .form-check-label {
+            font-size: 1.3rem; /* Tamaño del texto de la etiqueta */
+            margin-left:1rem;
+            text-align: justify;
+        }
+
+        #banner_1 {
+            background-color: #EB0A1E;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #banner_1 h3 {
+            font-size: 1.2rem; /* Tamaño de la fuente para el título */
+            margin-bottom: 0.5rem;
+        }
+
+        #banner_1 p {
+            font-size: 0.9rem; /* Tamaño de la fuente para los párrafos */
+            margin-bottom: 1rem;
+        }
+
+        #banner_1 ul {
+            list-style: none; /* Remover los puntos de la lista */
+            padding: 0;
+            text-align: left; /* Texto de lista alineado a la izquierda */
+            margin-bottom: 1.5rem;
+        }
+
+        #banner_1 ul li {
+            font-size: 0.7rem; /* Tamaño de la fuente para los elementos de lista */
+            position: relative;
+            padding-left: 20px;
+            line-height: 1.4;
+        }
+
+        #banner_1 ul li::before {
+            content: '▲'; /* Agregar un símbolo antes de cada ítem de la lista */
+            color: cyan; /* Color del símbolo */
+            position: absolute;
+            left:10px; /* Ajusta la posición a la izquierda del texto */
+            top: 1px; /* Ajuste vertical si es necesario */
+            font-size: 0.5rem;
+
+        }
+
+        #banner_1 a.btn {
+            background-color: blue; /* Color de fondo del botón */
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            text-decoration: none; /* Sin subrayado */
+            color: white; /* Color del texto */
+        }
+
+        #banner_1 a.btn:hover {
+            background-color: darkblue; /* Color del botón al pasar el ratón */
+        }
+
+        #banner_1_mafita {
+            width: 80%; /* Ejemplo de tamaño responsive */
+            max-width:10rem ; /* Máximo tamaño de la imagen */
+            display: block; /* Asegura que la imagen no esté inline */
+            margin: 0 auto; /* Centra la imagen horizontalmente */
+        }
+
+        #list img {
+            width: 20px; /* Tamaño específico para iconos en listas */
+            margin-right: 10px; /* Espacio entre el icono y el texto */
+        }
+
+        #laptopimg {
+            width: 80%; /* Asegurar que la imagen es responsive */
+            max-width: 180px; /* Máximo tamaño de la imagen */
+            display: block; /* Asegura que la imagen no esté inline */
+            margin: 30px auto; /* Espacio y centrado */
+        }
+        .banner {
+            display: none; /* Ocultar todos los banners inicialmente */
+            /*position: absolute; !* Posicionarlos encima uno del otro *!*/
+            transition: opacity 1s; /* Transición suave de la opacidad */
+        }
+        .visible {
+            display: block; /* Mostrar el banner activo */
+            opacity: 1; /* Opacidad completa */
+        }
+
+        .img-toggle {
+            display: none; /* Ocultar todas las imágenes inicialmente */
+            width: 1rem;
+            margin-left: 5px;
+        }
+        .img-toggle.visible {
+            display: inline; /* Mostrar la imagen activa */
+        }
+
+
+
+        #file-list {
+            list-style: none; /* Remueve los marcadores de lista */
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        #file-list li {
+            background-color: #f1f1f1;
+            padding: 5px 10px; /* Añadido padding a la derecha e izquierda */
+            border: none;
+            margin-bottom: 5px;
+            position: relative;
+            display: flex; /* Asegura que los contenidos de li se alineen correctamente */
+            align-items: center; /* Centra los elementos verticalmente */
+            overflow: hidden;/* Oculta cualquier contenido que se desborde */
+            font-size: 0.7rem;
+        }
+
+        #file-list li::before {
+            content: '•'; /* Usamos un pseudo-elemento para el marcador */
+            color: red; /* Puedes cambiar el color del marcador */
+            margin-right: 10px; /* Espacio entre el marcador y el texto */
+            flex-shrink: 0; /* Previene que el marcador se escale */
+        }
+
+        #file-list li span {
+            flex-grow: 1; /* Permite que el texto ocupe todo el espacio disponible */
+            margin-right: 30px; /* Espacio para el botón de eliminar */
+            white-space: nowrap; /* Evita que el texto se envuelva */
+            overflow: hidden; /* Oculta el texto que se desborde */
+            text-overflow: ellipsis; /* Añade puntos suspensivos si el texto se desborda */
+        }
+
+        #file-list li button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+
+        }
+        #file-list li button img {
+            height: 16px; /* or any size you want */
+            width: auto;
+        }
+
+        /* .modal {
+            width: 300px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            background: #fff;
+            box-shadow: 0 2px 7px rgba(0,0,0,0.2);
+            text-align: center;
+        } */
+
+
+        .btn-red {
+            background-color: red; /* Color de fondo rojo */
+            color: white; /* Color de texto blanco */
+            border-color: red; /* Borde del mismo color rojo */
+        }
+
+        .btn-red:hover, .btn-red:focus {
+            /*background-color: darkred; !* Color de fondo más oscuro al pasar el mouse o enfocar *!*/
+            /*border-color: darkred; !* Borde del mismo color oscuro *!*/
+        }
+
+        .tooltip {
+            position: absolute;
+            display: none;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+
+
+        .info-block {
+            border: none;
+            padding: 10px 0;
+        }
+
+        .info-block label {
+            font-weight: bold;
+            display: block;
+            color: #333;
+        }
+
+        .info-block p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+
+        /* Elimina la línea en el último bloque */
+        .info-block:last-child {
+            border-bottom: none;
+        }
+
+        .btn_enviar
+        {
+            background-color: red;
+            color: white;
+            border: none;
+            /*padding-right: 50px;*/
+            /*padding-left: 50px;*/
+            /*padding-top: 10px;*/
+            /*padding-bottom: 10px;*/
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+            width: 7rem;
+        }
+
+        .btn_atras{
+            background-color: red;
+            color: white;
+            border: none;
+            padding-right: 30px;
+            padding-left: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .btn_atras img {
+            width: 1rem;
+            margin-right: 7px;
+            border-radius: 20px;
+        }
+        .btn_siguiente
+        {
+            background-color: red;
+            color: white;
+            border: none;
+            padding-right: 30px;
+            padding-left: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .btn_siguiente img {
+            width: 1rem;
+            margin-left: 7px;
+            border-radius: 20px;
+        }
+        .info-block button{
+            background-color: #EB0A1E;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 4rem;
+            font-weight: bold;
+        }
+
+        .info-block .box_campo{
+            display: flex;
+            align-items: center;
+            border: solid 1px #E9EAE8;
+            width: 100%; margin-left: 10px;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            justify-items: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            text-align: justify;
+            background-color: white;
+
+        }
+
+        .img-fluid
+        {
+            width: 50%;
+            height: auto;
+        }
+
+        .red-background {
+            background-color: red;
+        }
+
+        .text-white {
+            color: white;
+        }
+
+        .custom-container {
+            background-color: red;
+            padding: 20px;
+        }
+
+        .custom-text {
+            color: white;
+            text-align: left;
+        }
+
+        .heading {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .sub-heading {
+            font-size: 1.5rem;
+        }
+
+        .custom-padding {
+            padding: 50px;
+        }
+
+        .identification {
+            font-size: 2rem;
+            text-align: justify;
+        }
+
+        .reminder {
+            font-size: 1.5rem;
+            text-align: justify;
+        }
+
+
+        .tooltip-container {
+            position: relative; /*relative: los elementos se posicionan de forma relativa a su posición normal.*/
+            display: inline-block;
+        }
+
+        .tooltip-img {
+            visibility: hidden;
+            width: 220px;
+            background-color: white;
+            color: #000000;
+            text-align: justify;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%; /* Cambia el valor según sea necesario */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border:1px solid cyan;
+            font-size: 0.7rem;
+        }
+        .tooltip-container:hover .tooltip-img {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /*Mediaquerys*/
+
+        @media (max-width: 768px) {
+            .text-white p {
+                font-size: 1.2rem; /* Tamaño de fuente más pequeño para dispositivos móviles */
+            }
+        }
+
+        /* Media query para pantallas con un ancho máximo de 1280px */
+        @media (max-width: 1280px) {
+            #home input {
+
+                height: 30px; /* Altura reducida para pantallas más pequeñas */
+                padding: 8px;
+                font-size: 0.8rem; /* Tamaño de fuente más pequeño para mejor ajuste */
+            }
+
+            label{
+                font-size: 0.8rem; /* Tamaño de fuente más pequeño para mejor ajuste */
+            }
+
+            /* Reducir el margen inferior de cada contenedor de entrada */
+            .mb-3 {
+                margin-bottom: 10px; /* Ajusta este valor según lo ajustado que desees los espacios */
+            }
+
+            /* Opcional: Reducir el padding de los inputs para que ocupen menos espacio vertical */
+            .form-control {
+                padding: 6px 12px; /* Reduce el padding vertical si es necesario */
+                height: auto; /* Asegura que el tamaño del input se ajuste al contenido */
+            }
+
+            /* Ajustar los estilos del label para reducir el espacio */
+            .form-label {
+                margin-bottom: 5px; /* Espacio entre el label y el input */
+                display: block; /* Asegura que el label siempre esté encima del input */
+            }
+            .btn-red {
+                background-color: red; /* Color de fondo rojo */
+                color: white; /* Color de texto blanco */
+                border-color: red; /* Borde del mismo color rojo */
+                /*margin-bottom: 20px;*/
+            }
+        }
+
+
+        @media (max-width: 1280px) {
+            #profile .form-control, #profile .form-select {
+                font-size: 0.8rem; /* Más pequeño en dispositivos de baja resolución */
+                height: 30px; /* Altura más reducida para los inputs */
+            }
+            #profile .form-label {
+                font-size: 0.8rem; /* Etiquetas más pequeñas en dispositivos de baja resolución */
+            }
+
+            #profile .mb-3 {
+                margin-bottom: 20px; /* Reduce el margen para una mejor visualización */
+            }
+            .btn_enviar
+            {
+                background-color: red;
+                color: white;
+                border: none;
+                font-size: 1rem;
+                cursor: pointer;
+                border-radius: 20px;
+                font-weight: bold;
+
+            }
+
+            #btnatras{
+                background-color: red;
+                color: white;
+                border: none;
+                /*padding-right: 30px;*/
+                /*padding-left: 30px;*/
+                /*padding-top: 10px;*/
+                /*padding-bottom: 10px;*/
+                font-size: 1rem;
+                cursor: pointer;
+                border-radius: 20px;
+                font-weight: bold;
+                padding-top: 10px;
+                padding-bottom: 10px;;
+            }
+        }
+
+        /* Para pantallas extremadamente pequeñas como 720px de ancho */
+        @media (max-width: 720px) {
+            #profile .form-control, #profile .form-select {
+                font-size: 11px; /* Aún más pequeño para dispositivos muy pequeños */
+                height: 32px; /* Altura más reducida aún */
+            }
+            #profile .form-label {
+                font-size: 0.7rem; /* Etiquetas muy pequeñas en dispositivos muy pequeños */
+            }
+
+            #profile .mb-3 {
+                margin-bottom: 8px; /* Margen aún menor */
+            }
+            .img-fluid
+            {
+                width: 30%;
+                height: auto;
+            }
+            .identification {
+                font-size: 1.5rem;
+                text-align: justify;
+            }
+            .heading {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+
+            .sub-heading {
+                font-size: 1.5rem;
+            }
+
+            .custom-padding {
+                padding: 50px;
+            }
+
+            .reminder {
+                font-size: 1rem;
+                text-align: justify;
+            }
+            .form-check-label {
+                font-size: 1rem; /* Tamaño del texto de la etiqueta */
+                margin-left:1rem;
+                text-align: justify;
+            }
+            .form-check-input {
+                accent-color: red; /* Cambia el color del tick a rojo */
+                width: 1.2rem; /* Tamaño de la casilla */
+                height: 1.2rem; /* Tamaño de la casilla */
+                margin-top: 0.4rem;
+            }
+        }
+
+        /* Cambiar el color del icono de éxito */
+        .swal2-icon.swal2-success .swal2-success-ring {
+            border-color: red; /* Cambia el color del borde del círculo */
+        }
+
+        .swal2-icon.swal2-success [class^=swal2-success-line] {
+            background-color: red; /* Cambia el color del fondo del tick */
+        }
+
+        .swal2-show
+        {
+            border: 2px solid black;
+        }
+
+
+
+    </style>
+    <div id="loader">
+        <div class="spinner-border text-danger" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <div id="loading-text">Cargando información...</div>
+    </div>
+    
+    <div id="initial-page" class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <div class="custom-container">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="custom-text">
+                                        <p class="heading">Formulario Web</p>
+                                        <p class="sub-heading">¿Tienes alguna consulta o solicitud?</p>
+                                        <p class="sub-heading">Este es el lugar.</p>
+                                    </div>
+                                    <!-- Imagen -->
+                                    <img src="https://i.imgur.com/JVs2YBI.png" class="img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <div class="custom-padding">
+                                <p class="identification">Identifícate ingresando tu número de documento</p>
+                                <p class="reminder">Recuerda que si representas a una persona jurídica, debes ingresar con el RUC de la empresa.</p>
+                                <div class="d-flex align-items-center mb-3">
+                                    <select class="form-select flex-grow-1" aria-label="Selecciona tipo de documento" id="tipoDoc"></select>
+                                    <input type="text" class="form-control" placeholder="Número de documento" id="nroDoc" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="acceptTerms">
+                                    <label class="form-check-label" for="acceptTerms">
+                                        He leído y acepto las
+                                        <span id="link" style="text-decoration: underline; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#TerminosyCondiciones">condiciones de políticas de seguridad.</span>
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary" onclick="continuarYBuscarCliente()" id="btncontinuar1" disabled>Continuar</button>
+                                <div id="loadingCliente" style="display:none;">Cargando...</div>
+                                <div id="datosCliente" style="display:none;">Aquí se mostrarán los datos del cliente.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección del formulario -->
+            </div>
+        </div>
+    </div>
+    <div id="form-tabs" class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <div style="background-color: red; color: white; padding: 10px;">
+                    <h1 style="margin-left: 36px;">Formulario Web</h1>
+                </div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="border: none">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                            <label class="icon-tab"><span>1. Tus datos</span><img src="https://i.imgur.com/LDg9LLO.png" style="width: 2rem; margin-left: 20px"></label>
+                        </a>
+    
+                    </li>
+    
+                    <li class="nav-item" role="presentation" >
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                            <label class="icon-tab"><span>2. Detállanos tu caso</span><img src="https://i.imgur.com/503mtel.png" style="width: 2rem; margin-left: 20px"></label>
+    
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+                            <label class="icon-tab"><span>3. Confirmación</span><img src="https://i.imgur.com/RLje62x.png" style="width: 2rem; margin-left: 20px"></label>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <!--                    TUS DATOS PERSONALES-->
+                        <div class="row">
+                            <!-- Primera columna para formularios o datos -->
+                            <div class="col-md-8">
+                                <!--                            <h5>Tus Datos Personales</h5>-->
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="tipoDoc2" class="form-label">Tipo de documento</label>
+                                                <input type="text" class="form-control" id="tipoDoc2" placeholder="" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="mb-3">
+                                                <label for="nroDoc" class="form-label">Número de documento</label>
+                                                <input type="text" class="form-control" id="nroDoc2" placeholder="" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="nombres" class="form-label">Nombres</label>
+                                                <input type="text" class="form-control" id="nombres" placeholder="" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="apellidoPaterno" class="form-label">Apellido Paterno*</label>
+                                                <input type="text" class="form-control" id="apellidoPaterno" placeholder="" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="apellidoMaterno" class="form-label">Apellido Materno*</label>
+                                                <input type="text" class="form-control" id="apellidoMaterno" placeholder="" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="mb-3">
+                                                <label for="correo" class="form-label">Correo electrónico*</label>
+                                                <input type="text" class="form-control" id="correo" placeholder="" required>
+                                                <input type="text" id="correo_original" style="display:none;">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="telefono" class="form-label">Celular*</label>
+                                                <input type="text" class="form-control" id="telefono" placeholder="" required>
+                                                <input type="text" id="celular_original" style="display:none;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3" style="font-family: 'Arial'">
+                                                <label style="font-size: 0.8rem">Si has cambiado tu correo electrónico o celular, es importante que los actualices, utilizaremos esta información para comunicarnos contigo y proporcionarte una respuesta oportuna a tu caso.</label>
+                                                <label style="font-size: 0.8rem">(*) Información obligatoria</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                <button class="btn btn-primary mt-3" onclick="nextTab('profile-tab')">Continuar</button>-->
+                                </form>
+                                <div class="row justify-content-between">
+                                    <div class="col-auto">
+                                        <button class="btn_atras" onclick="backForm()"><img src="https://i.imgur.com/yAL1JdK.png">Atrás</button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn_siguiente" onclick="continuarYPasarAPerfil()">Siguiente<img src="https://i.imgur.com/NfgeFxw.png"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Segunda columna para imágenes o información adicional -->
+                            <div class="col-md-4" id="banner_1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <h3>¿Eres cliente MAF?</h3>
+                                            <p>¡Ingresa a <a  style="text-decoration: none; color: #82CEE6; font-weight: bold" href="https://zonasegura.mafperu.com/portalclientes/">MAF Digital</a> donde encontrarás toda la información que necesitas!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <img src="https://i.imgur.com/ecj0TPt.png" id="banner_1_mafita" alt="Imagen Mafita">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <ul>
+                                                <li>Contrato</li>
+                                                <li>Estado de cuenta</li>
+                                                <li>Cronograma de pago</li>
+                                                <li>Carta de no adeudo</li>
+                                                <li>Renovación de póliza</li>
+                                            </ul>
+    
+                                        </div>
+                                        <div class="mb-3">
+                                            <p style="font-size: 0.8rem">Y mucho más!!</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <img src="https://i.imgur.com/hIHxsQV.png" id="laptopimg" alt="Imagen de laptop">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <!--                     DETALLANOS TU CASO-->
+                        <div class="row" >
+                            <!-- Primera columna para formularios o datos -->
+                            <div class="col-md-8">
+                                <!--                            <h5>Datos del contrato y requerimientos/h5>-->
+                                <form>
+                                    <div class="row">
+    
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="numeroContrato" class="form-label">Nro. Operación*</label>
+                                                <select class="form-select" id="numeroContrato">
+                                                    <option value="">Seleccionar</option> <!-- Opción predeterminada -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+    
+                                                <label for="tipoProducto" class="form-label">Tipo de Producto</label>
+                                                <input type="text" class="form-control" id="tipoProducto" readonly>
+    
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="placa" class="form-label">Placa
+                                                    <div class="tooltip-container">
+                                                        <span class="tooltip-img">Escribe la placa relacionada a tu consulta o solicitud. Si tienes más de una, escríbelas separadas por comas ( , )</span>
+                                                    <img id="image1" class="img-toggle" src="https://i.imgur.com/w5TxXhX.png">
+                                                    <img id="image2" class="img-toggle" src="https://i.imgur.com/bUuHRCr.png">
+                                                    </div>
+                                                </label>
+                                                <input class="form-control" type="text" id="placa">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="tipoCaso" class="form-label">Consulta o solicitud*
+                                                    <div class="tooltip-container">
+                                                        <span class="tooltip-img"><strong>Consulta:</strong> Requerimiento de información o duda respecto a algún producto o servicio de la financiera.<br><strong>Solicitud:</strong> Servicio adicional o exigencia extra a la naturaleza del producto.</span>
+                                                        <img id="image_consulta1" class="img-toggle" src="https://i.imgur.com/USW5nc6.png">
+                                                        <img id="image_consulta2" class="img-toggle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABmJLR0QA/wD/AP+gvaeTAAAHqklEQVRYw62XeVRU5xXA7/feLMwMsz5mYx9wXFCjuGvViqgkLkdPtGI00ZxojmlPmy7HJdG6tJoYozFpjBsqgqwCB4FhANHYGNNoEiwVRIyoAyI7Azg4zP5u/9KazZlHvf/ed3/f77v3Ld8jwDEwL2+2o6zs5a4b10YPdDyI6W/vDQEEAVBij1DFdMgM4U3aEbG1opkzisnr6yu5sElAArduhd7IPf27rwqL1w086NDKCIEQAQ1euxWkYhqcTi+4PRKghBLw0F7o9ziALw4CgU7XaPz13JKJb//hY2IwNP5fMlhXJ+jLTNtmSknZwmMFlI8vhB5AAJnMpo+KuBEdZ7wpYvgdPiJw0T6J0G616e9/f8vYc/f2eFFft1iKLCBLQw/Fh4WbNm3UvbHqCNHp7FynAVhVFZsxbkxDplyEhfJgzNJF4pcLlprRVJ6IiPQzaxFpzMpKqpo/vzRXqcFspRY/U0diyqSZFqy5HcNNpNyUWDTC2JsnF+PxEAWeW7KoEr/4YiLnHQEAVlcbzateL03RhmOqVIEZBkM3VlQkBFZcUZqwL5RxZipFmK2VO7r2vLdjMBI/jq7df9+eodO4CpRSTNfrnWgqT/QzmtrYHIOxO1fP4IEoxoP/LJnyPESe8E0Zs3K1IZ6zMgZzDWN78LtfGBk2N4tSRk625DE6TAth3Gg6O+t5ijxZ58yZOelyteOMNBTzx0xr+NmL2vbs23hUHYbHVDq0vv/h9oDh5ouTMd+UiBUVkxAxoFdF7a6dO3P0OkxVMXjnwIGNPwRWV0cf1oVhJqPDS8uWlQYCNL2xJnN/pIFN0RjwU5ESTw8dginxo1trdu/8ayD1F+cnnE8NUeI+g9GLdXUqAAAKAKA6O2OT6pEdaNYDM7du+LM/UNqUqTd7TOWrwvr6CN/rApGQB+6O+yBqseivffTJrsbN7+7yx0h4Z/NWK48CcbeN7sop+MuTRO7EFywFUiXWLXrZ7HcsX38d9mF4GKYoZHg+Pv4e7j/wR/dH+9Y3rVuekSGnsSI4GPOiYh5iZ2ewP1ZpcrI5TxWFRVHDmxGRAOYem3dEJcIURouYmz/Pr0z7dcnepOnNe6ePa8HrV8OfzlVMH3ujQizBbIUc8T+Xh/pllVcmZgnVWCRRIZbkzeZ5issWBwMP+uVKOyQv+xxWPBtAdGPsiFUx0BbKJ6GhA0/n7HaHWEAAvDyeB5joZn8yMNz4L0ajsFG9HbIWc9lSqqvROppPxBASM+TfhBCfXwAAEDLB87QIIlI9mzfudd5pNvT6EKYs/U0WiYhw+OUYDE5VlPqG3WGD3lsNoyhrY7PB43BCxFDj7UBEftJqROry2t9mFh4/uclHC0AaP8ZifGez34fgceiNxptCiQSsdy2xlNvarpbxWVCqxW2Dkal/bV36/cLcVwAAFFMnfrfk9NGZxGDoC7ReqonsdLhYcPfbVDzW6xGwLA0UhW7OXamz6HJ+Nf5Vsd0GohfiLYs+PTyHGI02LgxC0EnzeYAet5Dy8IUuD+EDCzwhVxnnvTvDgRDgqzQwefnyQ1xFAAB83j4hj49AaHBTQUyI1UfTMGDt03IFBTESdysN0EQTcOn1gxrzw852PQEvBKnknTxVVPg99836sNb6e3GcSVOnXpm7dcMWUVCwL3b16uzByLTdbzV6XW5QREQ38bRxI2pd9fUzui1No7AOBWQkCfjeIYQgAOwZjMTjaGl6MJ71Imjjx9ZQooSZhT5xEPhsfTKoKZjBBYTV1dEX5rx05dLcpKtYU8PtOAkAj0pLk+x9djFIGdC8+GIxICJ1MG5Yx0mGwWsrVgT0xX4cWSvXnE9XaDFNqsbCtW8WcZUpSV5pzlDosGj4SAsAAEUIYactXX4CiAeqLpgW4DeVEwKFyWXSLpfPC4JgMVACoZNTV69eNXZ89eV88AFMm7ew+H+JhobwoxEab6pGjJXLXwr4xwvb2tTVb/0+u2r9W4ewq0vKReabxQvNx0UiPB0e8wivXIn+QfL+jm27jqgkmCoNwq4tf9rJteVcomXbzu35Wi1mq1XY8v7uDT/dZUODMC1+bMNZpQrN0eEDWHLquR7Gn6xTUjY7VRvhOiURYV78CAu2t0t+/sK6u5EFhmG9GTQf08JUXizLm/1cRc7mJ2bJ1J5CKYMZo4Z0Y83lGD8FpklZ0bHONKUET+gY5/fbtgV8OH9W1G/fsCN9aJSjWK3HU4oQJ5abZgW2g3PnJKdGDm9NkwdjvlKJtxYvNuOlSxGD6saF8okXlySdT9ME40mFEA/GhPdgWRn3jmeNG3chh2HYU4IgPBYWheeTV5udBeVJfgUQCVZeTCxJXmn+WK9lU9QKTNME45kJcQ1Y++0vbsrvf86dg58kF+3/xyGtk2Z4tkdAI4JQxh+IHDusSqxRNehCY9uBolw+1i3ssXZq2+7ci2ttbB7lfDggowkPWBbAKeazSW+v3RK55s2DPz6qcpJ5HG3v7tj0beaZlYL+3pHe/h6eh/WAUq0Em80NLAGgBQg8GgG9PnB4CXhFMqBkTOeC5NcOSz7Y+rdA1ghY5skITCZxW3nReuv12im9lqZJ7kcDeo/bKaB44ApSyq3SyMh6Xfy4z0M/O/EBV/Z/AeRMdsIG05bmAAAAAElFTkSuQmCC"
+                                                              alt="Descripción Alternativa" class="tooltip_1" data-tooltip-content="Consulta*: Requerimiento de información <br> o duda respecto a algún producto o <br> servicio de la financiera.<br>
+                                                     Solicitud*: Servicio adicional o exigencia <br> extra a la naturaleza del producto.">
+                                                    </div>
+                                                </label>
+                                                <select class="form-select" id="tipoCaso">
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="C">Consulta</option>
+                                                    <option value="S">Solicitud</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="mb-3">
+                                                <label for="motivos" class="form-label">Motivo*</label>
+                                                <select class="form-select" id="motivos">
+    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="mb-3">
+                                                <label for="submotivos" class="form-label">Submotivos*</label>
+                                                <select class="form-select" id="submotivos">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label for="diasAtencion" class="form-label">Atención
+                                                    <div class="tooltip-container">
+                                                        <span class="tooltip-img" style="text-align: center">El tiempo promedio de atención máximo en días hábiles </span>
+                                                    <img id="image_atencion1" class="img-toggle" src="https://i.imgur.com/NKP5S5R.png">
+                                                    <img id="image_atencion2" class="img-toggle" src="https://i.imgur.com/dbJIr2q.png">
+                                                    </div>
+                                                </label>
+                                                <input class="form-control" id="diasAtencion" disabled readonly></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-3">
+                                            <!--                                        <textarea class="form-control" placeholder="textarea1" id="floatingTextarea1" style="height: 15vh">-->
+                                            <!--                                        </textarea>-->
+    
+                                            <div id="infoArea" style="border: 1px solid #ccc; padding: 20px; min-height: 100px;background-color: #E9EAE8; font-size: 0.8rem; display:none">
+                                                <div class="content-div" id="combinacion_1" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Este motivo te servirá para solicitar la reprogramación (postergar) del pago de tu crédito, de 1 hasta 3 cuotas, por alguno de los siguientes motivos:</p>
+                                                                <li>Siniestro Vehicular</li>
+                                                                <li>Problemas económicos</li>
+                                                                <li>Salud</li>
+                                                                <li>Otros</li>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <span style="color: red">¡Importante!</span>
+                                                                <p>Debes descargar y adjuntar el/los siguiente(s) formato(s) correctamente completado(s):</p>
+                                                                <li><a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD-DE-REFINANCIAMIENTO.pdf" style="text-decoration: none">Formulario de Reprogramación Regular</a></li>
+                                                                <li>Actualización de datos - <a href="https://mitsui-leasing.com/wp-content/uploads/2024/05/FORMATO-DE-ACTUALIZACION-DE-DATOS-PERSONA-NATURAL-1.pdf" target="_blank" style="text-decoration: none">(N)</a>/<a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD_ACTUALIZACION-DE-DATOS-_PERSONA-JURIDICA.pdf" target="_blank" style="text-decoration: none">(J)</a></li>
+                                                                <li>Sustento de ingresos según tipo de cliente (PN/PJ) y categoría (no)</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_2" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Quiero saber sobre el estado de mi consulta y/o solicitud</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_3" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Mi abono no se refleja o aplica correctamente en el sistema.</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Voucher de abono o print de pantalla de pago</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_4" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Aplica para casos en donde el cliente contaba con seguro endosado vigente, pero no presentó su póliza a tiempo a MAF.</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Enviar el número de Cuenta, Banco, CCI</li>
+                                                                <li>Número de cuenta a nombre del mismo cliente y con la misma moneda del crédito</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_5" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Si tuviste una pre-cancelación de tu crédito y tenías desgravamen capitalizado, puedes solicitar la verificación de saldo a favor, en caso aplique, se realizrá la devolución.</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Enviar el número de Cuenta, Banco, CCI</li>
+                                                                <li>Número de cuenta a nombre del mismo cliente y con la misma moneda del crédito</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_6" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Si desea información sobre cuota, vencimiento, tasa actual, si cuenta con seguro o no, etc</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Nro. OP o placa </li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_7" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cuando no puedas cumplir con tu actual cronograma y no puedas acceder a otra opción para cumplir tus pagos, podrás solicitar refinanciar tu crédito. Toma en cuenta que al refinanciar, tu calificativo en la Central de Riesgos se verá afectado.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <span style="color: red">¡Importante!</span>
+                                                                <p>Debes descargar y adjuntar el/los siguiente(s) formato(s) correctamente completado(s):</p>
+                                                                <li><a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD-DE-REFINANCIAMIENTO.pdf" style="text-decoration: none">Formulario de Refinanciamiento</a></li>
+                                                                <li>Actualización de datos - <a href="https://mitsui-leasing.com/wp-content/uploads/2024/05/FORMATO-DE-ACTUALIZACION-DE-DATOS-PERSONA-NATURAL-1.pdf" style="text-decoration: none;" target="_blank">(N)</a>/<a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD_ACTUALIZACION-DE-DATOS-_PERSONA-JURIDICA.pdf" target="_blank" style="text-decoration: none">(J)</a></li>
+                                                                <li>Sustento de ingresos según tipo de cliente (PN/PJ) y categoría ()</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_8" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cuando desees consultar sobre los requisitos a presentar o cómo acceder a una reprogramación</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Nro. OP o placa </li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_9" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cuando desees consultar sobre los requisitos a presentar o cómo acceder a una reprogramación de tu última cuota</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Nro. OP o placa </li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_10" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Se envia automáticamente a los 7 días de crédito cancelado. Se sugiere llamar a la Central Telefónica</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Tener crédito cancelado</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_11" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Si cuentas con una póliza externa y quieres realizar tu trámite de renovación.</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <p>Póliza vehicular vigente, comprobante de pago de la póliza o cargo en cuenta,endoso a favor de MAF. Luego debe pagar comisión por Evaluación de Póliza Endosada (<a href="https://mafperu.com/wp-content/uploads/2024/04/Tarifario-Credito-Vehicular.pdf" style="text-decoration: none" target="_blank">ver tarifario</a>).
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_12" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cuando desee la inclusión de la placa en la póliza vehicular</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_13" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Se envia automáticamente a los 7 días de crésito cancelado. Se sugiere llamar a la Central Telefónica</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Tener crédito cancelado</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_14" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cuando cliente indique que presentó su póliza externa (Endoso) y está pendiente la actualización del cronograma</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_15" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Esta opción te permitirá consultar sobre tu estado de póliza actual</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Nro. OP o placa </li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_16" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cliente solicita envío de la póliza vehicular</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Indicar el numero de operación</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-div" id="combinacion_17" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3" style="text-align: justify">
+                                                                <p>Cliente solicita envío de la póliza vehicular</p>
+                                                                <span style="color: red">¡Importante!</span><br>
+                                                                <span>Se necesita: </span>
+                                                                <li>Indicar el numero de operación</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Más divs para otras combinaciones -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-3">
+                                            <h5 style="color: red; font-weight: bold">Descríbenos tu caso</h5>
+                                            <p style="font-size: 0.8rem">Indíquenos detalladamente su consulta o solicitud. Y dependiendo del caso, además debrá brindarnos información referente al número de meses, monto, fechas, entre otros datos relevantes para usted.</p>
+                                            <textarea class="form-control" placeholder="Cuentanos..." id="floatingTextarea2" style="height: 15vh"></textarea>
+                                            <span style="font-weight: bolder; font-size: 0.7rem">(*) Información obligatoria</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="mb-3">
+                                                <h5>Documentos adjuntos</h5>
+                                                <p>Puede adjuntar vouchers, estados de cuenta, imágenes, u otros documentos para sustentar su caso.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <div class="custom-file-container" style="position: relative;">
+                                                    <input type="file" id="DocumentFiles" name="DocumentFiles" multiple="" style="opacity: 0; position: absolute; left: 0; top: 0; width: 100%; height: 100%; cursor: pointer;"/>
+                                                    <button type="button" id="customButton" style="width: 100%; border: none; border-radius: 5px; font-size: 1rem; padding-bottom: 10px; padding-top: 10px;font-weight: normal">Adjuntar documentos <img src="https://i.imgur.com/fYK08ph.png" style="width: 1rem; float: right; margin-right: 1rem; margin-top: 0.2rem"></button>
+                                                </div>
+    
+                                                <p style="font-size: 0.7rem; margin-top: 10px; text-align: justify">*Máximo 10 archivos de 30 MB cada uno.</br>*Los formatos permitidos son PNG, JPEG, GIF, DOCX, XLS, XLSX, PDF.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <ul id="file-list"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                <button type="button" id="enviarBtn">Enviar</button>-->
+                                </form>
+                                <div class="row justify-content-between">
+                                    <!--                                <button onclick="copiarValores()">Copiar valores</button>-->
+                                    <div class="col-auto">
+                                        <button class="btn_atras" onclick="gotoTab('home-tab')"><img src="https://i.imgur.com/yAL1JdK.png">Atrás</button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn_siguiente" onclick="manejarClicBoton()">Siguiente<img src="https://i.imgur.com/NfgeFxw.png"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Segunda columna para imágenes o información adicional -->
+                            <div class="col-md-4 col-md-3 d-flex flex-column" style="text-align: center; padding-top: 20px; justify-items: center; align-content: center;align-items: center">
+                                <div id="banner1" class="banner visible">
+                                    <h3 style="color: red; font-weight: bold; font-size: 1.2rem">¡Soy Chat Mafito!</h3></br>
+                                    <img src="https://i.imgur.com/xSrIJ9v.gif" class="img-fluid" alt="mafito" style="width:10rem;">
+                                    <p style="font-size: 1rem; font-weight: bold">Y estoy aquí para resolver tus consultas.</p>
+                                    <p style="font-size: 1rem">Me encuentras en el <br><span style="color: red; font-weight: bold"> MAF Digital</span></p>
+                                    <p style="font-size: 1rem">De lunes a viernes de 9 am a 6 pm</p>
+                                    <img src="https://i.imgur.com/gUr5rcH.png" alt="mafito" style="width:10rem;">
+                                </div>
+                                <div id="banner2" class="banner">
+                                    <p style="font-size: 1.2rem">Registrate en <br><span style="color: red; font-weight: bold">MAF Digital</span> y</br>podrás:</p>
+                                    <span style="font-size: 1rem; font-weight: bold">Descargar tu contrato</span>
+                                    </br>
+                                    </br>
+                                    <img src="https://i.imgur.com/hkTaQxq.png" style="width: 10rem">
+                                    </br>
+                                    </br>
+                                    <p style="font-size: 1rem; font-weight: bold">Revisar tu Estado de Cuenta y Cronograma de pagos. Y si deseas, descargarlos!</p>
+                                    <img src="https://i.imgur.com/H4L8wrj.png" style="width: 10rem">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        <!-- Contenido de la pestaña Confirmación -->
+                        <div class="row">
+                            <div class="col-md-8">
+    
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-12" style="background-image: url(https://i.imgur.com/MT9E4by.png); background-repeat: no-repeat">
+                                            <div class="mb-2">
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>1RO</button>
+                                                    <div class="box_campo">
+                                                        <label>Tipo de documento: </label>
+                                                        <span id="con_tipodoc" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>2DO</button>
+                                                    <div class="box_campo">
+                                                        <label>Número de documento: </label>
+                                                        <span id="con_nrodoc" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button onclick="gotoTab('profile-tab')">3RO</button>
+                                                    <div class="box_campo">
+                                                        <label>Nombre: </label>
+                                                        <span id="con_nombre" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>4TO</button>
+                                                    <div class="box_campo">
+                                                        <label>Correo electrónico: </label>
+                                                        <span id="con_correo" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>5TO</button>
+                                                    <div class="box_campo">
+                                                        <label>Celular: </label>
+                                                        <span id="con_celular" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>6TO</button>
+                                                    <div class="box_campo">
+                                                        <label>Tipo de producto: </label>
+                                                        <span id="con_tipoproducto" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>7MO</button>
+                                                    <div class="box_campo">
+                                                        <label>Nro. Operación: </label><span id="con_nrocontrato" style="margin-left: 7px"></span>
+                                                        <label style="margin-left: 10px">Placa:</label>
+                                                        <span id="con_placa" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>8VO</button>
+                                                    <div class="box_campo">
+                                                        <label>Motivo: </label>
+                                                        <span id="con_motivo" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>9NO</button>
+                                                    <div class="box_campo">
+                                                        <label>Consulta o solicitud: </label>
+                                                        <span id="con_tipocaso" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>10MO</button>
+                                                    <div class="box_campo">
+                                                        <label>Documento adjuntos: </label>
+                                                        <span id="con_adjuntos" style="margin-left: 7px"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-block" style="display: flex; align-items: center">
+                                                    <button>11VO</button>
+                                                    <div class="box_campo">
+                                                        <label>Descríbenos tu caso:</label>
+                                                        <p id="con_descripcion" style="margin-left: 7px"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <p style="text-align: center">Antes de dar clic en el botón "Enviar",<strong> verifica que todos los datos que nos has brindado sean los correctos.</strong> De lo contrario, es momento de corregirlos.</p>
+                                        </div>
+    
+                                    </div>
+                                    <!--                                <button class="btn btn-primary mt-3" onclick="nextTab('profile-tab')">Continuar</button>-->
+                                </form>
+                                <div class="row">
+                                    <div class="col-md-12" style="display: flex; justify-content: space-between">
+                                        <button class="btn_atras" onclick="gotoTab('profile-tab')"><img src="https://i.imgur.com/yAL1JdK.png" alt="f_atras">Atrás</button>
+                                        <button type="button" class="btn_enviar" id="enviarBtn">Enviar</button>
+                                        <button type="button" class="btn_enviar" id="" style="visibility: hidden">Enviar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Segunda columna para imágenes o información adicional -->
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div id="banner_v" class="banner visible" style="text-align: center">
+                                        <h3 style="color: red; font-weight: bold; font-size: 1.2rem">¡Soy Chat Mafito!</h3></br>
+                                        <img src="https://i.imgur.com/xSrIJ9v.gif" class="img-fluid" alt="mafito" style="width:10rem;">
+                                        <p style="font-size: 1rem; font-weight: bold">Y estoy aquí para resolver tus consultas.</p>
+                                        <p style="font-size: 1rem">Me encuentras en el <br><span style="color: red; font-weight: bold"> MAF Digital</span></p>
+                                        <p style="font-size: 1rem">De lunes a viernes de 9 am a 6 pm</p>
+                                        <img src="https://i.imgur.com/gUr5rcH.png" alt="mafito" style="width:10rem;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="TerminosyCondiciones" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title fs-5" id="staticBackdropLabel">WEB MAF - TÉRMINOS Y CONDICIONES</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p>Mitsui Auto Finance S.A, con RUC N° 20375361991, con domicilio en Cal. Las Begonias N° 475, Edificio Plaza del Sol, Piso 10 - San Isidro, Lima – Perú, será responsable del uso y el tratamiento de sus datos personales.</p>
+                        <h5>
+                            <b>Tratamiento Necesario</b>
+                        </h5>
+                        <p>
+                            MAF Perú tratará sus datos personales de carácter identificativos registrados en el formulario previo, con la finalidad de enviarle – a través de cualquier medio de comunicación (teléfono, correo electrónico o SMS o medios similares) información sobre productos y/o servicios que ha solicitado.
+                        </p>
+                        <h5>
+                            <b>Destinatarios Necesarios</b>
+                        </h5>
+                        <p>
+                            Asimismo, sus datos podrán ser tratados por terceros – a nivel nacional o internacional – por encargo de MAF para cumplir con la finalidad necesaria previamente descrita, tales como Autoridades Nacionales, Centrales de Riesgos, proveedores de: hosting, contact center, y otros que sean necesarios para dicho fin.
+                        </p>
+                        <h5>
+                            <b>Ejercicio de los derechos ARCO</b>
+                        </h5>
+                        <p>
+                            Puede ejercer los derechos de acceso, rectificación, cancelación y oposición de sus datos personales; así como revocar su consentimiento presentando sus solicitudes en nuestras oficinas o solicitar la rectificación y/o modificación de sus datos personales a través de nuestra oficina de atención Cal. Las Begonias N° 475, Edificio Plaza del Sol, Piso 10 - San Isidro, Lima – Perú.
+                        </p>
+                    </div>
+    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var imagen = document.getElementById("image_consulta1");
+            var tooltip = document.getElementById("tooltip");
+
+            imagen.addEventListener("mouseover", function(event) {
+                // Obtener la posición del ratón
+                var x = event.clientX;
+                var y = event.clientY;
+
+                // Mostrar el tooltip en la posición del ratón
+                tooltip.style.left = (x + 10) + "px"; // Agregar 10px para ajustar el tooltip al lado derecho de la imagen
+                tooltip.style.top = (y + 10) + "px"; // Agregar 10px para ajustar el tooltip debajo de la imagen
+                tooltip.style.display = "block";
+            });
+
+            imagen.addEventListener("mouseout", function() {
+                // Ocultar el tooltip cuando el mouse sale de la imagen
+                tooltip.style.display = "none";
+            });
+        });
+
+    </script>
+    <script> //Loader al iniciar contacto
+    // Espera a que el contenido de la página esté completamente cargado
+    window.addEventListener('load', function() {
+        // Oculta el loader una vez que la página está cargada
+        // document.getElementById('loader').style.display = 'none';
+    });
+    </script>
+    <script> // Habilitar boton continuar cuando el checkbox de terminos y condiciones esté activo
+    // Obtener referencia al checkbox y al botón
+    var checkbox = document.getElementById('acceptTerms');
+    var boton = document.getElementById('btncontinuar1');
+    var nroDoc = document.getElementById('nroDoc');
+
+    // Agregar un event listener al checkbox
+    checkbox.addEventListener('click', function() {
+        // Verificar si el checkbox está marcado
+        if (checkbox.checked && nroDoc.value.trim() != '') {
+            // Habilitar el botón si el checkbox está marcado
+            boton.disabled = false;
+        } else {
+            // Deshabilitar el botón si el checkbox está desmarcado
+            boton.disabled = true;
+        }
+
+        nroDoc.addEventListener('input', function() {
+            if(nroDoc != '' && checkbox.checked){
+                // Verificar si el checkbox está marcado
+                if (checkbox.checked && nroDoc.value.trim() != '') {
+                    // Habilitar el botón si el checkbox está marcado
+                    boton.disabled = false;
+                } else {
+                    // Deshabilitar el botón si el checkbox está desmarcado
+                    boton.disabled = true;
+                }
+            }
+        });
+    });
+    </script>
+
+    <script>
+        // Función para alternar la visibilidad de las imágenes
+        function toggleImages(imageId1, imageId2) {
+            var img1 = document.getElementById(imageId1);
+            var img2 = document.getElementById(imageId2);
+
+            // Comprobar cuál imagen está visible y alternarla
+            if (img1.classList.contains('visible')) {
+                img1.classList.remove('visible');
+                img2.classList.add('visible');
+            } else {
+                img2.classList.remove('visible');
+                img1.classList.add('visible');
+            }
+        }
+
+        // Inicializar la primera imagen de cada conjunto como visible
+        document.getElementById('image1').classList.add('visible');
+        document.getElementById('image_consulta1').classList.add('visible');
+        document.getElementById('image_atencion1').classList.add('visible');
+
+        // Alternar las imágenes de 'Placa' cada 500 milisegundos (0.5 segundos)
+        setInterval(function() { toggleImages('image1', 'image2'); }, 500);
+        // Alternar las imágenes de 'Consulta' cada 500 milisegundos (0.5 segundos)
+        setInterval(function() { toggleImages('image_consulta1', 'image_consulta2'); }, 500);
+        // Alternar las imágenes de 'Atención' cada 500 milisegundos (0.5 segundos)
+        setInterval(function() { toggleImages('image_atencion1', 'image_atencion2'); }, 500);
+
+    </script>
+
+
+    <script>
+        function backForm() {
+
+
+            // Oculta el indicador de carga y muestra los datos
+            document.getElementById('loadingCliente').style.display = 'none';
+            document.getElementById('datosCliente').style.display = 'block';
+            document.getElementById('initial-page').style.display = 'block'; // Oculta la página inicial
+            document.getElementById('form-tabs').style.display = 'none'; // Muestra las pestañas del formulario
+        }
+
+        function nextTab(tabId) {
+            let nextTab = document.getElementById(tabId);
+            new bootstrap.Tab(nextTab).show(); // Bootstrap 5 utiliza esta forma para mostrar pestañas
+        }
+
+        function gotoTab(tabId) {
+            // Bootstrap 5 activación de tab
+            const someTabTriggerEl = document.querySelector('#' + tabId);
+            const tab = new bootstrap.Tab(someTabTriggerEl);
+
+            tab.show(); // Usa la API de Bootstrap para mostrar la pestaña
+        }
+
+    </script>
+    <script>
+        function showTabs() {
+            document.getElementById('initial-page').style.display = 'none'; // Oculta la página inicial
+            document.getElementById('form-tabs').style.display = 'block'; // Muestra las pestañas del formulario
+        }
+
+        // Asegúrate de que las pestañas están inicialmente ocultas cuando la página carga
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('form-tabs').style.display = 'none';
+        });
+
+    </script>
+    <script> // MODIFICADO
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Selecciona el elemento select y el input
+        const tipoDoc = document.getElementById('tipoDoc');
+        const nroDoc = document.getElementById('nroDoc');
+
+        // Verifica que los elementos necesarios existan antes de agregar listeners
+        if (!tipoDoc || !nroDoc || !nombres) {
+            console.error('Algunos elementos esenciales no están presentes en el DOM.');
+            return; // Detiene la ejecución adicional del código para evitar errores
+        }
+
+        //document.getElementById('btncontinuar1').addEventListener('click', buscarCliente);
+        // Selecciona los elementos donde se reflejarán los valores
+        const tipoDoc2 = document.getElementById('tipoDoc2');
+        const nroDoc2 = document.getElementById('nroDoc2');
+        // const spannrodoc = document.getElementById('con_nrodoc');
+        // const con_tipodoc = document.getElementById('con_tipodoc');
+        // const con_nombre = document.getElementById('con_nombre');
+
+
+        // Verifica también estos elementos antes de proceder
+        if (!tipoDoc2 || !nroDoc2 ) {
+            console.error('No se encontraron los elementos para reflejar los valores.');
+            return; // Detiene la ejecución adicional del código para evitar errores
+        }
+
+
+        // Escucha cambios en el select
+        tipoDoc.addEventListener('change', function() {
+            // Actualiza el input del tipo de documento con el texto visible de la opción seleccionada
+            tipoDoc2.value = tipoDoc.options[tipoDoc.selectedIndex].text;
+        });
+
+        // Escucha cambios en el input del número de documento
+        nroDoc.addEventListener('input', function() {
+            nroDoc2.value = nroDoc.value;  // Actualiza el input del número de documento
+        });
+
+        document.getElementById('tipoCaso').addEventListener('change', function() {
+            var tipoCaso = this.value; // obtiene el valor del dropdown
+            var dias = ''; // variable para almacenar los días de atención según el caso
+
+            switch (tipoCaso) {
+                case 'C': // Consulta
+                    dias = '4 días';
+                    break;
+                case 'S': // Solicitud
+                    dias = '15 días';
+                    break;
+                default:
+                    dias = ''; // Si no hay selección o es inválido, no muestra nada
+                    break;
+            }
+
+            document.getElementById('diasAtencion').value = dias; // Establece el valor en el input de días de atención
+        });
+
+
+        document.getElementById('tipoCaso').addEventListener('change', async function() {
+            document.getElementById('loader').style.display = '';
+            await cargarMotivos(this.value);
+
+            // Oculta el loader una vez que la página está cargada
+            document.getElementById('loader').style.display = 'none';
+        });
+
+        document.getElementById('motivos').addEventListener('change', async function() {
+            document.getElementById('loader').style.display = '';
+            const tipo = document.getElementById('tipoCaso').value;
+            const motivo = this.value;
+            await cargarSubMotivos(tipo, motivo);
+            // Oculta el loader una vez que la página está cargada
+            document.getElementById('loader').style.display = 'none';
+        });
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     cargarTiposDocumento();});
+        // Llama a cargarTiposDocumento de forma asíncrona
+        try {
+            await cargarTiposDocumento();
+            // Oculta el loader una vez que la página está cargada
+            document.getElementById('loader').style.display = 'none';
+        } catch (error) {
+            console.error('Error cargando tipos de documento:', error);
+        }
+
+        document.getElementById('tipoCaso').addEventListener('change', actualizarTextoPorSeleccion);
+        document.getElementById('motivos').addEventListener('change', actualizarTextoPorSeleccion);
+        document.getElementById('submotivos').addEventListener('change', actualizarTextoPorSeleccion);
+
+        document.getElementById('customButton').addEventListener('click', function() {
+            document.getElementById('DocumentFiles').click();
+        });
+
+        let accumulatedFiles = [];  // Almacena todos los archivos acumulados
+
+        document.getElementById('DocumentFiles').addEventListener('change', function() {
+            // Agrega nuevos archivos a la lista acumulada
+            accumulatedFiles = accumulatedFiles.concat(Array.from(this.files));
+
+            updateFileList();
+        });
+
+        function updateFileList() {
+            var fileList = document.getElementById('file-list');
+            fileList.innerHTML = '';  // Limpiar la lista para actualizar la visualización
+
+            accumulatedFiles.forEach((file, index) => {
+                let li = document.createElement('li');
+                li.textContent = file.name + ' ';
+
+                let removeButton = document.createElement('button');
+                let img = document.createElement('img');
+                img.src = 'https://i.imgur.com/PHUCp8i.png';  // URL de la imagen del botón para eliminar
+                img.alt = 'Eliminar';
+                removeButton.appendChild(img);
+
+                removeButton.addEventListener('click', function() {
+                    // Eliminar el archivo de la lista acumulada
+                    accumulatedFiles = accumulatedFiles.filter((_, i) => i !== index);
+                    updateFileList();  // Actualizar la lista visualmente y en el input
+                });
+
+                li.appendChild(removeButton);
+                fileList.appendChild(li);
+            });
+
+            // Actualizar el input file con los archivos acumulados
+            const dataTransfer = new DataTransfer();
+            accumulatedFiles.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('DocumentFiles').files = dataTransfer.files;
+
+            // Actualizar el contador de archivos
+            document.getElementById('con_adjuntos').textContent = accumulatedFiles.length + ' archivo(s)';
+        }
+
+        document.getElementById('enviarBtn').addEventListener('click', async function() {
+            document.getElementById('loader').style.display = '';
+            await enviarCaso()
+            document.getElementById('loader').style.display = 'none';
+        });
+
+        //cargarContrato();
+        // cargarTiposDocumento();
+        // console.log(`La resolución de tu pantalla es: ${screen.width} x ${screen.height} píxeles`);
+
+
+    });
+
+
+
+    function aplicarCambios() {
+
+        let correoVisible = document.getElementById('correo').value;
+        let celularVisible = document.getElementById('telefono').value;
+
+        // Verifica si contienen asteriscos antes de copiar a los campos ocultos y enmascarar
+        if (!correoVisible.includes('***')) {
+            document.getElementById('correo_original').value = correoVisible;
+            //document.getElementById('correo').value = maskValue(correoVisible);
+        }
+
+        if (!celularVisible.includes('***')) {
+            document.getElementById('celular_original').value = celularVisible;
+            //document.getElementById('telefono').value = maskValue(celularVisible);
+        }
+    }
+
+    async function cargarTiposDocumento() { //MODIFICADO
+        try {
+            const response = await fetch('https://localhost:44324/api/contacto/listartipodocumento'); //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/tipoDoc
+            const data = await response.json();
+
+            const select = document.getElementById('tipoDoc');
+            select.innerHTML = '<option value="">Seleccionar</option>';
+
+            data.forEach(doc => {
+                const option = new Option(doc.Nombre, doc.Codigo);
+                select.appendChild(option);
+            });
+        }catch(error){
+            console.error('Error cargando tipos de documento:', error);
+        }
+    }
+
+    function maskData() {
+        // Apellido Paterno y Materno: Muestra solo las últimas 3 letras
+
+        // Correo Electrónico: Muestra solo las últimas 3 letras antes del dominio
+        var correo = document.getElementById('correo').value;
+        var correoParts = correo.split('@');
+        if (correoParts[0].length > 3) {
+            document.getElementById('correo').value = '*'.repeat(correoParts[0].length - 3) + correoParts[0].slice(-3) + '@' + correoParts[1];
+        }
+
+        // Celular: Muestra solo los últimos 3 dígitos
+        var celular = document.getElementById('telefono').value;
+        if (celular.length > 3) {
+            document.getElementById('telefono').value = '*'.repeat(celular.length - 3) + celular.slice(-3);
+        }
+    }
+
+
+    async function continuarYBuscarCliente() {
+        try {
+            document.getElementById('loader').style.display = '';
+            await buscarCliente(); // Primero invoca buscarCliente para cargar los datos
+            await showTabs(); // Luego cambia a la siguiente pestaña
+        }finally{
+            document.getElementById('loader').style.display = 'none';
+        }
+    }
+
+    function manejarClicBoton() {
+
+        copiarValores();  // Primero copia los valores
+        nextTab('contact-tab');  // Luego avanza a la siguiente pestaña
+    }
+
+    async function buscarCliente() {
+        console.log('buscarCliente() se ha llamado');
+        const documento = document.getElementById('nroDoc').value;
+        document.getElementById('loadingCliente').style.display = 'block';
+        document.getElementById('datosCliente').style.display = 'none';
+
+        const url = `https://localhost:44324/api/contacto/clienteDocumento?nroDocumento=${documento}`; //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/cliente/${documento}
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
+            const cliente = await response.json();
+            console.log('Cliente:', cliente);
+            console.log(cliente.Primer_nombre)
+            let nombreCompleto = '';
+            // Verifica si es una persona o empresa y asigna datos según corresponda
+            if (cliente.Tipo === 'Persona') {
+                nombreCompleto = cliente.Primer_nombre + ' ' + (cliente.Segundo_nombre || '');
+                document.getElementById('apellidoPaterno').value = cliente.Apellido_paterno;
+                document.getElementById('apellidoMaterno').value = cliente.Apellido_materno;
+            } else if (cliente.Tipo === 'Empresa') {
+                nombreCompleto = cliente.Nombre_comercial || cliente.Nombre; // Ajusta según tus datos
+                document.getElementById('apellidoPaterno').value = '.';
+                document.getElementById('apellidoMaterno').value = '.';
+            }
+            document.getElementById('nombres').value = nombreCompleto;
+
+            document.getElementById('correo').value = cliente.Email;
+            document.getElementById('correo_original').value = cliente.Email;
+
+            document.getElementById('telefono').value = cliente.Telefono || cliente.Telefono2;
+            document.getElementById('celular_original').value = cliente.Telefono || cliente.Telefono2;
+
+            // Oculta el indicador de carga y muestra los datos
+            document.getElementById('loadingCliente').style.display = 'none';
+            document.getElementById('datosCliente').style.display = 'block';
+
+            // Verificar inputs con sin data
+            if(cliente.Primer_nombre == "" || cliente.Primer_nombre == null){
+                console.log('entro aqui')
+                const nombre = document.getElementById('nombres');
+                nombre.disabled = false;
+            }
+            if(cliente.apellidoMaterno == "" || cliente.apellidoMaterno == null){
+                const apellidoMaterno = document.getElementById('apellidoMaterno');
+                apellidoMaterno.disabled = false;
+            }
+
+            if(cliente.apellidoPaterno == "" || cliente.apellidoPaterno == null){
+                const apellidoPaterno = document.getElementById('apellidoPaterno');
+                apellidoPaterno.disabled = false;
+            }
+
+            // Cambia a la siguiente pestaña si es necesario
+            maskData();
+            showTabs();
+
+        }catch(error){
+            console.error('Error:', error);
+            //LIMPIAR SI NO TRAE DATA
+            document.getElementById('nombres').value = "";
+            document.getElementById('apellidoPaterno').value = "";
+            document.getElementById('apellidoMaterno').value = "";
+            document.getElementById('correo').value = "";
+            document.getElementById('correo_original').value = "";
+            document.getElementById('telefono').value = "";
+            document.getElementById('celular_original').value = "";
+
+            // Verificar inputs con sin data
+            const nombre = document.getElementById('nombres');
+            nombre.disabled = false;
+
+            const apellidoMaterno = document.getElementById('apellidoMaterno');
+            apellidoMaterno.disabled = false;
+
+            const apellidoPaterno = document.getElementById('apellidoPaterno');
+            apellidoPaterno.disabled = false;
+
+            document.getElementById('loadingCliente').style.display = 'none';
+
+        }
+    }
+
+
+    async function continuarYPasarAPerfil() {
+        try {
+            document.getElementById('loader').style.display = '';
+            aplicarCambios(); // Aplica los cambios antes de cargar los datos del contrato
+            await cargarContrato();  // Espera a que los datos del contrato se carguen
+            
+            nextTab('profile-tab');  // Cambia a la pestaña de perfil
+            document.getElementById('loader').style.display = 'none';
+        } catch (error) {
+            console.error('Error al cargar los datos del contrato. Ver consola para detalles.');
+            
+        }
+        
+    }
+
+    async function cargarContrato() {
+        try {
+            const documento = document.getElementById('nroDoc').value;
+            const url = `https://localhost:44324/api/contacto/clienteDocumento2?nroDocumento=${documento}`; //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/contrato/${documento}
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.error) {
+                console.log('No se encontró datos')
+                const numeroContrato = document.getElementById('numeroContrato');
+                numeroContrato.disabled = true;
+                nextTab('profile-tab');  // Cambia a la pestaña de perfil
+                document.getElementById('loader').style.display = 'none';
+                return;
+            }
+
+            const contratoSelect = document.getElementById('numeroContrato');
+            contratoSelect.innerHTML = '<option value="">Seleccionar</option>'; // Reinicia las opciones
+
+            data.forEach(contrato => {
+                const option = document.createElement('option');
+                option.value = contrato.NumeroContrato; // Usa solo el número de contrato para el value
+                option.textContent = contrato.NumeroContrato; // Muestra solo el número de contrato
+                contratoSelect.appendChild(option);
+            });
+
+            // Manejar cambios en el select para actualizar el tipo de producto
+            contratoSelect.onchange = function() {
+                const selectedContrato = data.find(c => c.NumeroContrato === this.value);
+                const tipoProductoInput = document.getElementById('tipoProducto');
+                tipoProductoInput.value = selectedContrato ? selectedContrato.Producto : 'Producto no especificado';
+            };
+        } catch (error) {
+            const numeroContrato = document.getElementById('numeroContrato');
+            numeroContrato.disabled = true;
+            console.error('Error al cargar datos:', error);
+        }
+    }
+
+
+    async function cargarMotivos(tipo) {
+        const select = document.getElementById('motivos');
+        select.innerHTML = '<option value="">Seleccionar</option>';
+        if (!tipo) return;
+        try {
+            const response = await fetch(`https://localhost:44324/api/contacto/listarmotivo?tipo=${tipo}`);
+            const data = await response.json();
+            data.forEach(motivo => select.appendChild(new Option(motivo.Nombre, motivo.Codigo)));
+        } catch (error) {
+            console.error('Error cargando motivos:', error);
+        }
+    }
+
+
+    async function cargarSubMotivos(tipo, motivo) {
+        const select = document.getElementById('submotivos');
+        select.innerHTML = '<option value="">Seleccionar</option>';
+        if (!tipo || !motivo) return;
+        try{
+            const response = await fetch(`https://localhost:44324/api/contacto/listarsubmotivo?tipo=${tipo}&motivo=${motivo}`);
+            const data = await response.json();
+            data.forEach(subMotivo => select.appendChild(new Option(subMotivo.Nombre, subMotivo.Codigo)));
+        }catch(error){
+            console.error('Error cargando submotivos:', error);
+
+        }
+    }
+
+    const combinaciones = {
+        "Solicitud_Facilidades Crediticias_Reprogramacion de Créditos Regulares": "combinacion_1",
+        "Consulta_Consulta por Seguros_Trámite / respuesta pendiente desde seguros": "combinacion_2",
+        "Solicitud_Trámites Vehiculares_Regularizaciones por aplicación de pagos": "combinacion_3",
+        "Solicitud_Pedido por seguros_Devolución de saldo por exclusión de póliza castigo": "combinacion_4",
+        "Solicitud_Pedido por seguros_Devolución de saldo Seguro Desgravamen por pre cancelación": "combinacion_5",
+        "Consulta_Información General_Detalle del Crédito (info de la cuota, TEA, etc.)": "combinacion_6",
+        "Solicitud_Facilidades Crediticias_Refinanciamiento": "combinacion_7",
+        "Consulta_Cambio de condiciones_Reprogramacion de Créditos": "combinacion_8",
+        "Consulta_Cambio de condiciones_Reprogramación cuota balón": "combinacion_9",
+        "Consulta_Trámites Vehiculares_Levantamiento de garantía": "combinacion_10",
+        "Solicitud_Pedido por seguros_Renovación Poliza Endosada": "combinacion_11",
+        "Solicitud_Pedido por seguros_Endosos (Incluir placas, etc.)": "combinacion_12",
+        "Solicitud_Pedido por seguros_Exclusión de póliza": "combinacion_13",
+        "Consulta_Consulta por Documentos_Carta de no adeudo": "combinacion_14",
+        "Consulta_Consulta por Seguros_Póliza de Seguros": "combinacion_15",
+        "Solicitud_Pedido por seguros_Copia de póliza de Seguros": "combinacion_16",
+        "Solicitud_Pedido por seguros_Comprobante de pago": "combinacion_17"
+
+        // Más combinaciones
+    };
+
+    function actualizarTextoPorSeleccion() {
+        const tipoCasoSelect = document.getElementById('tipoCaso');
+        const motivoSelect = document.getElementById('motivos');
+        const submotivoSelect = document.getElementById('submotivos');
+
+        const tipoCasoTexto = tipoCasoSelect.options[tipoCasoSelect.selectedIndex].text.trim();
+        const motivoTexto = motivoSelect.options[motivoSelect.selectedIndex]?.text.trim();
+        const submotivoTexto = submotivoSelect.options[submotivoSelect.selectedIndex]?.text.trim();
+
+        const clave = tipoCasoTexto + "_" + motivoTexto + "_" + submotivoTexto;
+
+        // Ocultar todos los divs
+        let visibleDivFound = false;
+        document.querySelectorAll('#infoArea .content-div').forEach(div => {
+            div.style.display = 'none';
+        });
+
+        // Mostrar el div correspondiente
+        const divId = combinaciones[clave];
+        if (divId && document.getElementById(divId)) {
+            document.getElementById(divId).style.display = 'block';
+            document.getElementById('infoArea').style.display = 'block'; // Mostrar infoArea si hay un div válido
+        } else {
+            document.getElementById('infoArea').style.display = 'none'; // Ocultar infoArea si no hay coincidencia válida
+        }
+    }
+
+    const tipoRequerimientoMap = {
+        'C': '8', // Consulta
+        'S': '10', // Solicitud
+        'R': '1', // Reclamo
+        'Q': '9'  // Queja
+    };
+
+    async function enviarCaso() {
+
+        // Verifica si cada elemento existe y alerta si no es así
+        const requiredIds = ['tipoCaso', 'tipoDoc', 'nroDoc', 'nombres', 'apellidoPaterno', 'apellidoMaterno', 'correo', 'telefono', 'motivos', 'submotivos', 'floatingTextarea2', 'numeroContrato', 'placa', 'tipoProducto'];
+        for (let id of requiredIds) {
+            if (!document.getElementById(id)) {
+                console.error(`Elemento faltante: ${id}`);
+                return; // Detiene la ejecución si falta algún campo crítico
+            }
+        }
+
+        const tipoCasoInput = document.getElementById('tipoCaso').value;
+        // Asegúrate de que tipoRequerimientoMap está definido en alguna parte del código.
+        const tipoCaso = tipoRequerimientoMap[tipoCasoInput] || tipoCasoInput;
+        const data = {
+            TipoDoc: document.getElementById('tipoDoc').value,
+            NroDoc: document.getElementById('nroDoc').value,
+            Nombres: document.getElementById('nombres').value,
+            ApellidoPaterno: document.getElementById('apellidoPaterno').value,
+            ApellidoMaterno: document.getElementById('apellidoMaterno').value,
+            Email: document.getElementById('correo_original').value,
+            Celular: document.getElementById('celular_original').value,
+            TipoCaso: tipoCaso,
+            Motivo: document.getElementById('motivos').value,
+            SubMotivo: document.getElementById('submotivos').value,
+            DetalleCaso: document.getElementById('floatingTextarea2').value,
+            NumeroContrato: document.getElementById('numeroContrato').value,
+            Placa: document.getElementById('placa').value,
+            EnvioNotificacion: "E",
+            TipoProductoLib: document.getElementById('tipoProducto').value,
+        };
+
+        //mostrarCargando(true); // Asegúrate de implementar esta función para manejar la UI.
+
+        console.log('Enviando datos del caso:', data);
+
+        try {
+            const response = await fetch('https://localhost:44324/api/contacto/registroForm', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            const responseData = await response.json();
+            //mostrarCargando(false); // Oculta el indicador de carga independientemente del resultado.
+
+            if (response.ok) {
+                // Suponiendo que enviarAdjunto usa un ID de error o caso para adjuntar archivos.
+                await enviarAdjunto(responseData.descripcionError);
+                //limpiarFormulario(); // Asegúrate de que esta función resetea el formulario adecuadamente.
+                // openModal('Caso creado con éxito. Caso ID: ' + responseData.descripcionError);
+                // Muestra una alerta de SweetAlert con un mensaje de registro exitoso
+                var primerNombre = data.Nombres.split(' ')[0]; // Extrae solo el primer nombre
+                Swal.fire({
+                    title: "¡Información registrada!",
+                    html: `Hola <strong>${primerNombre}</strong>, hemos recibido su caso correctamente, estaremos revisándolo para contactarnos con usted y brindarle una respuesta lo más antes posible. ¡Muchas gracias de parte de la familia <strong>MAF!</strong>`,
+                    icon: "success",
+                    showConfirmButton: true,
+                    confirmButtonColor: 'red', // Cambia el color de fondo del botón si lo deseas
+                    confirmButtonText: 'Cerrar',}).then((result) => {
+                    if (result.value) {
+                        window.location.reload();
+                    }
+                });
+
+            } else {
+                throw new Error(responseData.descripcionError || 'Error desconocido');
+            }
+        } catch (error) {
+            console.error(error);
+            mostrarCargando(false); // Asegúrate de que esta función exista para manejar la interfaz de usuario.
+            Swal.fire({
+                title: "Error al registrar el caso",
+                html: `Lamentablemente ocurrió un error al procesar su solicitud. Por favor, intente de nuevo más tarde.<br><br>Detalle del error: ${error.message}`,
+                icon: "error",
+                confirmButtonColor: 'red',
+                confirmButtonText: 'Cerrar'
+            });
+            // mostrarCargando(false);
+            // openModal('Error al crear el caso: ' + error.message);
+        }
+    }
+
+    async function enviarAdjunto(casoId) {
+        const archivoInput = document.getElementById('DocumentFiles');
+        if (archivoInput.files.length === 0) {
+            console.log("No hay archivos para enviar.");
+            return;
+        }
+
+        const formData = new FormData();
+        Array.from(archivoInput.files).forEach(file => {
+            formData.append('file', file);
+            formData.append('filename', file.name);
+        });
+        formData.append('caseId', casoId);
+        formData.append('subject', 'Contáctanos MAF PERÚ');
+
+        try {
+            const adjuntoResponse = await fetch('https://localhost:44324/api/contacto/adjunto', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!adjuntoResponse.ok) {
+                throw new Error('Error al adjuntar archivo');
+            }
+            console.log('Adjunto enviado con éxito');
+        } catch (error) {
+            console.error('Error enviando adjunto:', error);
+        }
+    }
+
+    function copiarValores() {
+
+        document.getElementById('con_nombre').textContent = document.getElementById('nombres').value;
+        document.getElementById('con_correo').textContent = document.getElementById('correo_original').value;
+        document.getElementById('con_celular').textContent = document.getElementById('celular_original').value;
+        document.getElementById('con_nrodoc').textContent = document.getElementById('nroDoc').value;
+        document.getElementById('con_placa').textContent = document.getElementById('placa').value;
+        document.getElementById('con_tipodoc').textContent = document.getElementById('tipoDoc').options[document.getElementById('tipoDoc').selectedIndex].text;
+        document.getElementById('con_tipocaso').textContent = document.getElementById('tipoCaso').options[document.getElementById('tipoCaso').selectedIndex].text;
+        document.getElementById('con_motivo').textContent = document.getElementById('motivos').options[document.getElementById('motivos').selectedIndex].text;
+        document.getElementById('con_nrocontrato').textContent = document.getElementById('numeroContrato').options[document.getElementById('numeroContrato').selectedIndex].text;
+        document.getElementById('con_tipoproducto').textContent = document.getElementById('tipoProducto').value;
+        document.getElementById('con_descripcion').textContent = document.getElementById('floatingTextarea2').value;
+
+    }
+
+    function manejarClicBoton() {
+        copiarValores();  // Primero copia los valores
+        nextTab('contact-tab');  // Luego avanza a la siguiente pestaña
+    }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+</body>
+</html>
