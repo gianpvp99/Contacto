@@ -2094,6 +2094,7 @@
                     icon: "success",
                     showConfirmButton: true,
                     confirmButtonColor: 'red', // Cambia el color de fondo del botón si lo deseas
+                    allowOutsideClick: false, // Evita que el modal se cierre haciendo clic fuera del modal
                     confirmButtonText: 'Cerrar',}).then((result) => {
                     if (result.value) {
                         window.location.reload();
