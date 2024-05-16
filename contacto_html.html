@@ -900,7 +900,7 @@
                                             <p style="font-size: 0.8rem">Y mucho más!!</p>
                                         </div>
                                         <div class="mb-3">
-                                            <img src="https://i.imgur.com/hIHxsQV.png" id="laptopimg" alt="Imagen de laptop">
+                                            <img src="../images/Mi_maf_digital_v1.png" id="laptopimg" alt="Imagen de laptop">
                                         </div>
                                     </div>
                                 </div>
@@ -1551,8 +1551,6 @@
 
     <script>
         function backForm() {
-
-
             // Oculta el indicador de carga y muestra los datos
             document.getElementById('loadingCliente').style.display = 'none';
             document.getElementById('datosCliente').style.display = 'block';
@@ -1587,7 +1585,42 @@
 
     </script>
     <script> // MODIFICADO
+
     document.addEventListener('DOMContentLoaded', async function() {
+
+        // INI-- CONDICIÓN PARA REDIRECCIONAMIENTO DE LOS TABS
+        
+        var primerTabItem = document.getElementById("home-tab");
+        var segundoTabItem = document.getElementById("profile-tab");
+        var tercerTabItem = document.getElementById("contact-tab");
+        
+        // Por default bloquear los tabs posteriores
+        segundoTabItem.removeAttribute("data-bs-toggle");
+        tercerTabItem.removeAttribute("data-bs-toggle");
+
+        var navTabs = document.getElementById('myTab'); // Obtener el id del tab global
+        // Agregar un event listener para el evento 'shown.bs.tab'
+        navTabs.addEventListener('shown.bs.tab', function(event) {
+            // Obtener el elemento de navegación activo
+            var activeNavItem = event.target;
+            
+            // Obtener el ID del elemento de navegación activo
+            var activeNavId = activeNavItem.getAttribute('id');
+            
+            if(activeNavId == "home-tab"){
+                segundoTabItem.removeAttribute("data-bs-toggle");
+                tercerTabItem.removeAttribute("data-bs-toggle");
+            }else if(activeNavId == "profile-tab"){
+                // Agregar el atributo data-bs-toggle nuevamente
+                segundoTabItem.setAttribute("data-bs-toggle", "tab");
+                tercerTabItem.removeAttribute("data-bs-toggle");
+
+            }else if(activeNavId == "contact-tab"){
+                tercerTabItem.setAttribute("data-bs-toggle", "tab");
+            }
+        });
+
+        // --FIN 
 
         // Llama a cargarTiposDocumento de forma asíncrona
         try {
