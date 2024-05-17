@@ -193,6 +193,11 @@
             margin-left:1rem;
             text-align: justify;
         }
+        /* Estilo para los banners */
+        .borde-gris {
+            border: 1px solid #c3c3c3;  /* Borde gris delgado */
+            background-color: transparent;  /* Sin fondo */
+        }
 
         #banner_1 {
             background-color: #EB0A1E;
@@ -529,7 +534,7 @@
             color: #000000;
             text-align: justify;
             border-radius: 6px;
-            padding: 5px;
+            padding: 9px;
             position: absolute;
             z-index: 1;
             bottom: 100%; /* Cambia el valor según sea necesario */
@@ -797,7 +802,7 @@
                             <!-- Primera columna para formularios o datos -->
                             <div class="col-md-8">
                                 <!--                            <h5>Tus Datos Personales</h5>-->
-                                <form>
+                                <form class="needs-validation was-validated" novalidate>
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="mb-3">
@@ -816,7 +821,10 @@
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="nombres" class="form-label">Nombres</label>
-                                                <input type="text" class="form-control" id="nombres" placeholder="" disabled>
+                                                <input type="text" class="form-control" id="nombres" placeholder="" disabled required>
+                                                <div class="invalid-feedback">
+                                                    Los nombres son obligatorio.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -824,13 +832,19 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="apellidoPaterno" class="form-label">Apellido Paterno*</label>
-                                                <input type="text" class="form-control" id="apellidoPaterno" placeholder="" disabled>
+                                                <input type="text" class="form-control" id="apellidoPaterno" placeholder="" disabled required>
+                                                <div class="invalid-feedback">
+                                                    El apellido paterno es obligatorio.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="apellidoMaterno" class="form-label">Apellido Materno*</label>
-                                                <input type="text" class="form-control" id="apellidoMaterno" placeholder="" disabled>
+                                                <input type="text" class="form-control" id="apellidoMaterno" placeholder="" disabled required>
+                                                <div class="invalid-feedback">
+                                                    El apellido materno es obligatorio.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -838,8 +852,11 @@
                                         <div class="col-md-7">
                                             <div class="mb-3">
                                                 <label for="correo" class="form-label">Correo electrónico*</label>
-                                                <input type="text" class="form-control" id="correo" placeholder="" required>
+                                                <input type="email" class="form-control" id="correo" placeholder="" required>
                                                 <input type="text" id="correo_original" style="display:none;">
+                                                <div class="invalid-feedback">
+                                                    El correo electrónico es obligatorio.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
@@ -847,6 +864,9 @@
                                                 <label for="telefono" class="form-label">Celular*</label>
                                                 <input type="text" class="form-control" id="telefono" placeholder="" required>
                                                 <input type="text" id="celular_original" style="display:none;">
+                                                <div class="invalid-feedback">
+                                                    El celular es obligatorio.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -858,16 +878,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--                                <button class="btn btn-primary mt-3" onclick="nextTab('profile-tab')">Continuar</button>-->
-                                </form>
-                                <div class="row justify-content-between">
-                                    <div class="col-auto">
-                                        <button class="btn_atras" onclick="backForm()"><img src="https://i.imgur.com/yAL1JdK.png">Atrás</button>
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <button class="btn_atras" type="button" onclick="backForm()"><img src="https://i.imgur.com/yAL1JdK.png">Atrás</button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="btn_siguiente" type="button" onclick="continuarYPasarAPerfil()">Siguiente<img src="https://i.imgur.com/NfgeFxw.png"></button>
+                                        </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <button class="btn_siguiente" onclick="continuarYPasarAPerfil()">Siguiente<img src="https://i.imgur.com/NfgeFxw.png"></button>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>                                
                             </div>
                             <!-- Segunda columna para imágenes o información adicional -->
                             <div class="col-md-4" id="banner_1">
@@ -914,14 +939,13 @@
                             <!-- Primera columna para formularios o datos -->
                             <div class="col-md-8">
                                 <!--                            <h5>Datos del contrato y requerimientos/h5>-->
-                                <form>
+                                <form class="needs-validation was-validated" novalidate>
                                     <div class="row">
     
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="numeroContrato" class="form-label">Nro. Operación*</label>
                                                 <select class="form-select" id="numeroContrato">
-                                                    <option value="">Seleccionar</option> <!-- Opción predeterminada -->
                                                 </select>
                                             </div>
                                         </div>
@@ -958,19 +982,21 @@
                                                      Solicitud*: Servicio adicional o exigencia <br> extra a la naturaleza del producto.">
                                                     </div>
                                                 </label>
-                                                <select class="form-select" id="tipoCaso">
-                                                    <option value="">Seleccionar</option>
+                                                <select class="form-select" id="tipoCaso" required>
+                                                    <option selected="" disabled="" value="">Seleccionar</option>
                                                     <option value="C">Consulta</option>
                                                     <option value="S">Solicitud</option>
                                                 </select>
+                                                <div class="invalid-feedback">Selección obligatoria*</div>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
                                             <div class="mb-3">
                                                 <label for="motivos" class="form-label">Motivo*</label>
-                                                <select class="form-select" id="motivos">
-    
+                                                <select class="form-select" id="motivos" required>
+                                                    <option selected="" disabled="" value="">Seleccionar</option>
                                                 </select>
+                                                <div class="invalid-feedback">Selección obligatoria*</div>
                                             </div>
                                         </div>
                                     </div>
@@ -978,8 +1004,10 @@
                                         <div class="col-md-10">
                                             <div class="mb-3">
                                                 <label for="submotivos" class="form-label">Submotivos*</label>
-                                                <select class="form-select" id="submotivos">
+                                                <select class="form-select" id="submotivos" required>
+                                                    <option selected="" disabled="" value="">Seleccionar</option>
                                                 </select>
+                                                <div class="invalid-feedback">Selección obligatoria*</div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1017,7 +1045,7 @@
                                                                 <span style="color: red">¡Importante!</span>
                                                                 <p>Debes descargar y adjuntar el/los siguiente(s) formato(s) correctamente completado(s):</p>
                                                                 <li><a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD-DE-REFINANCIAMIENTO.pdf" style="text-decoration: none">Formulario de Reprogramación Regular</a></li>
-                                                                <li>Actualización de datos - <a href="https://mitsui-leasing.com/wp-content/uploads/2024/05/FORMATO-DE-ACTUALIZACION-DE-DATOS-PERSONA-NATURAL-1.pdf" target="_blank" style="text-decoration: none">(N)</a>/<a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD_ACTUALIZACION-DE-DATOS-_PERSONA-JURIDICA.pdf" target="_blank" style="text-decoration: none">(J)</a></li>
+                                                                <li>Actualización de datos - <a href="https://mitsui-leasing.com/wp-content/uploads/2024/05/FORMATO-DE-ACTUALIZACION-DE-DATOS-PERSONA-NATURAL-1.pdf" target="_blank" style="text-decoration: none">(Natural)</a>/<a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD_ACTUALIZACION-DE-DATOS-_PERSONA-JURIDICA.pdf" target="_blank" style="text-decoration: none">(Jurídica)</a></li>
                                                                 <li>Sustento de ingresos según tipo de cliente (PN/PJ) y categoría (no)</li>
                                                             </div>
                                                         </div>
@@ -1095,7 +1123,7 @@
                                                                 <span style="color: red">¡Importante!</span>
                                                                 <p>Debes descargar y adjuntar el/los siguiente(s) formato(s) correctamente completado(s):</p>
                                                                 <li><a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD-DE-REFINANCIAMIENTO.pdf" style="text-decoration: none">Formulario de Refinanciamiento</a></li>
-                                                                <li>Actualización de datos - <a href="https://mitsui-leasing.com/wp-content/uploads/2024/05/FORMATO-DE-ACTUALIZACION-DE-DATOS-PERSONA-NATURAL-1.pdf" style="text-decoration: none;" target="_blank">(N)</a>/<a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD_ACTUALIZACION-DE-DATOS-_PERSONA-JURIDICA.pdf" target="_blank" style="text-decoration: none">(J)</a></li>
+                                                                <li>Actualización de datos - <a href="https://mitsui-leasing.com/wp-content/uploads/2024/05/FORMATO-DE-ACTUALIZACION-DE-DATOS-PERSONA-NATURAL-1.pdf" style="text-decoration: none;" target="_blank">(Natural)</a>/<a href="https://mafperu.com/wp-content/uploads/2024/05/SOLICITUD_ACTUALIZACION-DE-DATOS-_PERSONA-JURIDICA.pdf" target="_blank" style="text-decoration: none">(Jurídica)</a></li>
                                                                 <li>Sustento de ingresos según tipo de cliente (PN/PJ) y categoría ()</li>
                                                             </div>
                                                         </div>
@@ -1223,7 +1251,7 @@
                                         <div class="mb-3">
                                             <h5 style="color: red; font-weight: bold">Descríbenos tu caso</h5>
                                             <p style="font-size: 0.8rem">Indíquenos detalladamente su consulta o solicitud. Y dependiendo del caso, además debrá brindarnos información referente al número de meses, monto, fechas, entre otros datos relevantes para usted.</p>
-                                            <textarea class="form-control" placeholder="Cuentanos..." id="floatingTextarea2" style="height: 15vh"></textarea>
+                                            <textarea required class="form-control" placeholder="Cuentanos..." id="floatingTextarea2" style="height: 15vh"></textarea>
                                             <span style="font-weight: bolder; font-size: 0.7rem">(*) Información obligatoria</span>
                                         </div>
                                     </div>
@@ -1245,6 +1273,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row justify-content-between">
+                                        <!--                                <button onclick="copiarValores()">Copiar valores</button>-->
+                                        <div class="col-auto">
+                                            <button class="btn_atras" type="button" onclick="gotoTab('home-tab')"><img src="https://i.imgur.com/yAL1JdK.png">Atrás</button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="btn_siguiente" type="button" onclick="manejarClicBoton()">Siguiente<img src="https://i.imgur.com/NfgeFxw.png"></button>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <div class="mb-3">
@@ -1252,27 +1289,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--                                <button type="button" id="enviarBtn">Enviar</button>-->
                                 </form>
-                                <div class="row justify-content-between">
-                                    <!--                                <button onclick="copiarValores()">Copiar valores</button>-->
-                                    <div class="col-auto">
-                                        <button class="btn_atras" onclick="gotoTab('home-tab')"><img src="https://i.imgur.com/yAL1JdK.png">Atrás</button>
-                                    </div>
-                                    <div class="col-auto">
-                                        <button class="btn_siguiente" onclick="manejarClicBoton()">Siguiente<img src="https://i.imgur.com/NfgeFxw.png"></button>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <!-- Segunda columna para imágenes o información adicional -->
-                            <div class="col-md-4 col-md-3 d-flex flex-column" style="text-align: center; padding-top: 20px; justify-items: center; align-content: center;align-items: center">
+                            <div class="col-md-4 col-md-3 d-flex flex-column borde-gris" style="text-align: center; padding-top: 20px; justify-items: center; align-content: center;align-items: center">
                                 <div id="banner1" class="banner visible">
                                     <h3 style="color: red; font-weight: bold; font-size: 1.2rem">¡Soy Chat Mafito!</h3></br>
                                     <img src="https://i.imgur.com/xSrIJ9v.gif" class="img-fluid" alt="mafito" style="width:10rem;">
                                     <p style="font-size: 1rem; font-weight: bold">Y estoy aquí para resolver tus consultas.</p>
                                     <p style="font-size: 1rem">Me encuentras en el <br><span style="color: red; font-weight: bold"> MAF Digital</span></p>
                                     <p style="font-size: 1rem">De lunes a viernes de 9 am a 6 pm</p>
-                                    <img src="https://i.imgur.com/gUr5rcH.png" alt="mafito" style="width:10rem;">
+                                    <img src="../images/Mi_maf_digital_v2.png" alt="mafito" style="width:10rem;">
                                 </div>
                                 <div id="banner2" class="banner">
                                     <p style="font-size: 1.2rem">Registrate en <br><span style="color: red; font-weight: bold">MAF Digital</span> y</br>podrás:</p>
@@ -1312,7 +1340,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="info-block" style="display: flex; align-items: center">
-                                                    <button onclick="gotoTab('profile-tab')">3RO</button>
+                                                    <button>3RO</button>
                                                     <div class="box_campo">
                                                         <label>Nombre: </label>
                                                         <span id="con_nombre" style="margin-left: 7px"></span>
@@ -1323,6 +1351,7 @@
                                                     <div class="box_campo">
                                                         <label>Correo electrónico: </label>
                                                         <span id="con_correo" style="margin-left: 7px"></span>
+                                                        <span id="con_correo_original" style="margin-left: 7px; display:none;"></span>
                                                     </div>
                                                 </div>
                                                 <div class="info-block" style="display: flex; align-items: center">
@@ -1330,6 +1359,7 @@
                                                     <div class="box_campo">
                                                         <label>Celular: </label>
                                                         <span id="con_celular" style="margin-left: 7px"></span>
+                                                        <span id="con_celular_original" style="margin-left: 7px; display: none;"></span>
                                                     </div>
                                                 </div>
                                                 <div class="info-block" style="display: flex; align-items: center">
@@ -1381,18 +1411,24 @@
                                         </div>
     
                                     </div>
-                                    <!--                                <button class="btn btn-primary mt-3" onclick="nextTab('profile-tab')">Continuar</button>-->
-                                </form>
-                                <div class="row">
-                                    <div class="col-md-12" style="display: flex; justify-content: space-between">
-                                        <button class="btn_atras" onclick="gotoTab('profile-tab')"><img src="https://i.imgur.com/yAL1JdK.png" alt="f_atras">Atrás</button>
-                                        <button type="button" class="btn_enviar" id="enviarBtn">Enviar</button>
-                                        <button type="button" class="btn_enviar" id="" style="visibility: hidden">Enviar</button>
+                                    <div class="row justify-content-between">
+                                        <div class="col-md-12" style="display: flex; justify-content: space-between">
+                                            <button class="btn_atras" onclick="gotoTab('profile-tab')"><img src="https://i.imgur.com/yAL1JdK.png" alt="f_atras">Atrás</button>
+                                            <button type="button" type="button" class="btn_enviar" id="enviarBtn">Enviar</button>
+                                            <button type="button" type="button" class="btn_enviar" id="" style="visibility: hidden">Enviar</button>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <ul id="file-list"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <!-- Segunda columna para imágenes o información adicional -->
-                            <div class="col-md-4">
+                            <div class="col-md-4 col-md-3 d-flex flex-column borde-gris" style="text-align: center; padding-top: 20px; justify-items: center; align-content: center;align-items: center">
                                 <div class="row">
                                     <div id="banner_v" class="banner visible" style="text-align: center">
                                         <h3 style="color: red; font-weight: bold; font-size: 1.2rem">¡Soy Chat Mafito!</h3></br>
@@ -1454,9 +1490,20 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
     <script>
-
+        const enviroment_url = "https://mafperu.com.pe/wa_experiencia_crm_vs2/api";
+        // var enviroment_url = "https://localhost:44324/api";
+        const CONTACTO = {
+            listar_tipo_documento: '/contacto/listartipodocumento',
+            cliente_documento: '/contacto/clienteDocumento',
+            cliente_documento2: '/contacto/clienteDocumento2',
+            listar_motivo: '/contacto/listarmotivo',
+            listar_submotivo: '/contacto/listarsubmotivo',
+            adjunto: '/contacto/adjunto',
+            registro_form: '/contacto/registroForm'
+        }
+    </script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             var imagen = document.getElementById("image_consulta1");
             var tooltip = document.getElementById("tooltip");
@@ -1477,7 +1524,6 @@
                 tooltip.style.display = "none";
             });
         });
-
     </script>
     <script> //Loader al iniciar contacto
     // Espera a que el contenido de la página esté completamente cargado
@@ -1552,10 +1598,11 @@
     <script>
         function backForm() {
             // Oculta el indicador de carga y muestra los datos
-            document.getElementById('loadingCliente').style.display = 'none';
-            document.getElementById('datosCliente').style.display = 'block';
-            document.getElementById('initial-page').style.display = 'block'; // Oculta la página inicial
-            document.getElementById('form-tabs').style.display = 'none'; // Muestra las pestañas del formulario
+            window.location.reload();
+            // document.getElementById('loadingCliente').style.display = 'none';
+            // document.getElementById('datosCliente').style.display = 'block';
+            // document.getElementById('initial-page').style.display = 'block'; // Oculta la página inicial
+            // document.getElementById('form-tabs').style.display = 'none'; // Muestra las pestañas del formulario
         }
 
         function nextTab(tabId) {
@@ -1790,7 +1837,7 @@
 
     async function cargarTiposDocumento() { //MODIFICADO
         try {
-            const response = await fetch('https://localhost:44324/api/contacto/listartipodocumento'); //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/tipoDoc
+            const response = await fetch(`${enviroment_url}${CONTACTO.listar_tipo_documento}`); //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/tipoDoc
             const data = await response.json();
 
             const select = document.getElementById('tipoDoc');
@@ -1836,18 +1883,16 @@
     }
 
     function manejarClicBoton() {
-
         copiarValores();  // Primero copia los valores
         nextTab('contact-tab');  // Luego avanza a la siguiente pestaña
     }
 
     async function buscarCliente() {
-        console.log('buscarCliente() se ha llamado');
         const documento = document.getElementById('nroDoc').value;
         document.getElementById('loadingCliente').style.display = 'block';
         document.getElementById('datosCliente').style.display = 'none';
 
-        const url = `https://localhost:44324/api/contacto/clienteDocumento?nroDocumento=${documento}`; //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/cliente/${documento}
+        const url = `${enviroment_url}${CONTACTO.cliente_documento}?nroDocumento=${documento}`; //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/cliente/${documento}
 
         try {
             const response = await fetch(url);
@@ -1856,8 +1901,6 @@
             }
 
             const cliente = await response.json();
-            console.log('Cliente:', cliente);
-            console.log(cliente.Primer_nombre)
             let nombreCompleto = '';
             // Verifica si es una persona o empresa y asigna datos según corresponda
             if (cliente.Tipo === 'Persona') {
@@ -1883,7 +1926,6 @@
 
             // Verificar inputs con sin data
             if(cliente.Primer_nombre == "" || cliente.Primer_nombre == null){
-                console.log('entro aqui')
                 const nombre = document.getElementById('nombres');
                 nombre.disabled = false;
             }
@@ -1930,6 +1972,18 @@
 
     async function continuarYPasarAPerfil() {
         try {
+            //LIMPIAR SI NO TRAE DATA
+            var nombres = document.getElementById('nombres').value ;
+            var apellidoPaterno = document.getElementById('apellidoPaterno').value;
+            var apellidoMaterno = document.getElementById('apellidoMaterno').value;
+            var correo = document.getElementById('correo').value;
+            var correoOriginal = document.getElementById('correo_original').value;
+            var telefono = document.getElementById('telefono').value;
+            var celularOriginal = document.getElementById('celular_original').value;
+            if(nombres == "" || apellidoPaterno == "" || apellidoMaterno == "" || correo == ""|| telefono == "" ){
+                return; // Retornar si los campos no estan completados
+            }
+
             document.getElementById('loader').style.display = '';
             aplicarCambios(); // Aplica los cambios antes de cargar los datos del contrato
             await cargarContrato();  // Espera a que los datos del contrato se carguen
@@ -1946,22 +2000,22 @@
     async function cargarContrato() {
         try {
             const documento = document.getElementById('nroDoc').value;
-            const url = `https://localhost:44324/api/contacto/clienteDocumento2?nroDocumento=${documento}`; //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/contrato/${documento}
+            const url = `${enviroment_url}${CONTACTO.cliente_documento2}?nroDocumento=${documento}`; //https://middleware-maf-test-57ed4627fc8a.herokuapp.com/contrato/${documento}
 
             const response = await fetch(url);
             const data = await response.json();
-
-            if (data.error) {
-                console.log('No se encontró datos')
+            if (data.length == 0) {
                 const numeroContrato = document.getElementById('numeroContrato');
                 numeroContrato.disabled = true;
+                numeroContrato.innerHTML = '<option selected="" disabled value="">No Aplica</option>';
                 nextTab('profile-tab');  // Cambia a la pestaña de perfil
                 document.getElementById('loader').style.display = 'none';
                 return;
             }
 
             const contratoSelect = document.getElementById('numeroContrato');
-            contratoSelect.innerHTML = '<option value="">Seleccionar</option>'; // Reinicia las opciones
+            contratoSelect.setAttribute("required","");
+            contratoSelect.innerHTML = '<option selected="" disabled value="">Seleccionar</option>'; // Reinicia las opciones
 
             data.forEach(contrato => {
                 const option = document.createElement('option');
@@ -1986,10 +2040,9 @@
 
     async function cargarMotivos(tipo) {
         const select = document.getElementById('motivos');
-        select.innerHTML = '<option value="">Seleccionar</option>';
         if (!tipo) return;
         try {
-            const response = await fetch(`https://localhost:44324/api/contacto/listarmotivo?tipo=${tipo}`);
+            const response = await fetch(`${enviroment_url}${CONTACTO.listar_motivo}?tipo=${tipo}`);
             const data = await response.json();
             data.forEach(motivo => select.appendChild(new Option(motivo.Nombre, motivo.Codigo)));
         } catch (error) {
@@ -2000,10 +2053,9 @@
 
     async function cargarSubMotivos(tipo, motivo) {
         const select = document.getElementById('submotivos');
-        select.innerHTML = '<option value="">Seleccionar</option>';
         if (!tipo || !motivo) return;
         try{
-            const response = await fetch(`https://localhost:44324/api/contacto/listarsubmotivo?tipo=${tipo}&motivo=${motivo}`);
+            const response = await fetch(`${enviroment_url}${CONTACTO.listar_submotivo}?tipo=${tipo}&motivo=${motivo}`);
             const data = await response.json();
             data.forEach(subMotivo => select.appendChild(new Option(subMotivo.Nombre, subMotivo.Codigo)));
         }catch(error){
@@ -2105,7 +2157,7 @@
         console.log('Enviando datos del caso:', data);
 
         try {
-            const response = await fetch('https://localhost:44324/api/contacto/registroForm', {
+            const response = await fetch(`${enviroment_url}${CONTACTO.registro_form}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -2168,7 +2220,7 @@
         formData.append('subject', 'Contáctanos MAF PERÚ');
 
         try {
-            const adjuntoResponse = await fetch('https://localhost:44324/api/contacto/adjunto', {
+            const adjuntoResponse = await fetch(`${enviroment_url}${CONTACTO.adjunto}`, {
                 method: 'POST',
                 body: formData
             });
@@ -2183,10 +2235,11 @@
     }
 
     function copiarValores() {
-
         document.getElementById('con_nombre').textContent = document.getElementById('nombres').value;
-        document.getElementById('con_correo').textContent = document.getElementById('correo_original').value;
-        document.getElementById('con_celular').textContent = document.getElementById('celular_original').value;
+        document.getElementById('con_correo').textContent = document.getElementById('correo').value;
+        document.getElementById('con_correo_original').textContent = document.getElementById('correo_original').value;
+        document.getElementById('con_celular').textContent = document.getElementById('telefono').value;
+        document.getElementById('con_celular_original').textContent = document.getElementById('celular_original').value;
         document.getElementById('con_nrodoc').textContent = document.getElementById('nroDoc').value;
         document.getElementById('con_placa').textContent = document.getElementById('placa').value;
         document.getElementById('con_tipodoc').textContent = document.getElementById('tipoDoc').options[document.getElementById('tipoDoc').selectedIndex].text;
@@ -2199,6 +2252,22 @@
     }
 
     function manejarClicBoton() {
+        if(document.getElementById('tipoCaso').value == ""){
+            return;
+        }
+
+        if(document.getElementById('motivos').value == ""){
+            return;
+        }
+
+        if(document.getElementById('submotivos').value == ""){
+            return;
+        }
+
+        if(document.getElementById('floatingTextarea2').value == ""){
+            return;
+        }
+
         copiarValores();  // Primero copia los valores
         nextTab('contact-tab');  // Luego avanza a la siguiente pestaña
     }
