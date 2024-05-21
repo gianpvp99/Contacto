@@ -1593,7 +1593,26 @@
         setInterval(function() { toggleImages('image_atencion1', 'image_atencion2'); }, 500);
 
     </script>
+    <script>
+        var currentBanner = 1;
+        function switchBanner() {
+            var banner1 = document.getElementById('banner1');
+            var banner2 = document.getElementById('banner2');
 
+            if (currentBanner === 1) {
+                banner1.classList.remove('visible');
+                banner2.classList.add('visible');
+                currentBanner = 2;
+            } else {
+                banner2.classList.remove('visible');
+                banner1.classList.add('visible');
+                currentBanner = 1;
+            }
+        }
+
+        // Cambiar cada 5 segundos
+        setInterval(switchBanner, 4000);
+    </script>
 
     <script>
         function backForm() {
